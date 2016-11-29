@@ -12,13 +12,17 @@ namespace VRLibrary.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Petition
+    public partial class LibrarianApplication
     {
-        public int PetID { get; set; }
-        public int LibID { get; set; }
-        public string AspNetUsersId { get; set; }
+        public int LibrarianAppId { get; set; }
+        public string AspNetLibrarianId { get; set; }
+        public string AspNetSuperUser { get; set; }
+        public Nullable<System.DateTime> DateApplied { get; set; }
+        public Nullable<System.DateTime> DateAccepted { get; set; }
+        public int LibId { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual Library Library { get; set; }
     }
 }

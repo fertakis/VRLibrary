@@ -26,16 +26,18 @@ namespace VRLibrary.Models
         }
     
         public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
+        public virtual DbSet<Application> Applications { get; set; }
         public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Book> Books { get; set; }
-        public virtual DbSet<Handle> Handles { get; set; }
-        public virtual DbSet<Handling> Handlings { get; set; }
-        public virtual DbSet<Interact> Interacts { get; set; }
+        public virtual DbSet<BookState> BookStates { get; set; }
+        public virtual DbSet<LibrarianApplication> LibrarianApplications { get; set; }
         public virtual DbSet<Library> Libraries { get; set; }
-        public virtual DbSet<Petition> Petitions { get; set; }
+        public virtual DbSet<Loan> Loans { get; set; }
+        public virtual DbSet<Rating> Ratings { get; set; }
+        public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

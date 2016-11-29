@@ -12,18 +12,18 @@ namespace VRLibrary.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Handling
+    public partial class BookState
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Handling()
+        public BookState()
         {
-            this.Handles = new HashSet<Handle>();
+            this.Books = new HashSet<Book>();
         }
     
-        public int HandID { get; set; }
-        public string Description { get; set; }
+        public int BookStateId { get; set; }
+        public string State { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Handle> Handles { get; set; }
+        public virtual ICollection<Book> Books { get; set; }
     }
 }

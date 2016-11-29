@@ -17,8 +17,10 @@ namespace VRLibrary.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Library()
         {
+            this.Applications = new HashSet<Application>();
             this.AspNetUsers = new HashSet<AspNetUser>();
-            this.Petitions = new HashSet<Petition>();
+            this.Books = new HashSet<Book>();
+            this.LibrarianApplications = new HashSet<LibrarianApplication>();
         }
     
         public int LibID { get; set; }
@@ -28,8 +30,12 @@ namespace VRLibrary.Models
         public string Email { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Application> Applications { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetUser> AspNetUsers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Petition> Petitions { get; set; }
+        public virtual ICollection<Book> Books { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LibrarianApplication> LibrarianApplications { get; set; }
     }
 }

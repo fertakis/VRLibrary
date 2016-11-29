@@ -17,8 +17,9 @@ namespace VRLibrary.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Book()
         {
-            this.Handles = new HashSet<Handle>();
-            this.Interacts = new HashSet<Interact>();
+            this.Loans = new HashSet<Loan>();
+            this.Ratings = new HashSet<Rating>();
+            this.Reservations = new HashSet<Reservation>();
         }
     
         public int BookID { get; set; }
@@ -26,15 +27,23 @@ namespace VRLibrary.Models
         public string Author { get; set; }
         public string Publisher { get; set; }
         public long ISBN { get; set; }
-        public string LibID { get; set; }
+        public int LibID { get; set; }
         public byte[] Shelf { get; set; }
         public string Subject { get; set; }
         public Nullable<decimal> Rating { get; set; }
-        public int State { get; set; }
+        public int BookState { get; set; }
+        public string ImagePath { get; set; }
+        public string Description { get; set; }
+        public string AspNetUserId { get; set; }
+        public Nullable<int> NoOfRaters { get; set; }
     
+        public virtual BookState BookState1 { get; set; }
+        public virtual Library Library { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Handle> Handles { get; set; }
+        public virtual ICollection<Loan> Loans { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Interact> Interacts { get; set; }
+        public virtual ICollection<Rating> Ratings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Reservation> Reservations { get; set; }
     }
 }
