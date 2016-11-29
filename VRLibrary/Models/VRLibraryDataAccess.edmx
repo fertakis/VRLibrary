@@ -15,6 +15,17 @@
           <Property Name="Model" Type="varbinary(max)" Nullable="false" />
           <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
         </EntityType>
+        <EntityType Name="Applications">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+          </Key>
+          <Property Name="ApplicationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LibId" Type="int" Nullable="false" />
+          <Property Name="AspNetUserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="DateOfApplication" Type="date" />
+          <Property Name="DateOfVerification" Type="date" />
+          <Property Name="AspNetLibrarianId" Type="nvarchar" MaxLength="128" />
+        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -78,36 +89,33 @@
           <Property Name="Author" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Publisher" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="ISBN" Type="bigint" Nullable="false" />
-          <Property Name="LibID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="LibID" Type="int" Nullable="false" />
           <Property Name="Shelf" Type="varbinary" MaxLength="10" />
           <Property Name="Subject" Type="varchar" MaxLength="50" />
           <Property Name="Rating" Type="decimal" Precision="2" Scale="2" />
-          <Property Name="State" Type="int" Nullable="false" />
+          <Property Name="BookState" Type="int" Nullable="false" />
+          <Property Name="ImagePath" Type="text" />
+          <Property Name="Description" Type="text" />
+          <Property Name="AspNetUserId" Type="nchar" MaxLength="128" />
+          <Property Name="NoOfRaters" Type="int" />
         </EntityType>
-        <EntityType Name="Handles">
+        <EntityType Name="BookState">
           <Key>
-            <PropertyRef Name="LogID" />
+            <PropertyRef Name="BookStateId" />
           </Key>
-          <Property Name="LogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BookID" Type="int" Nullable="false" />
-          <Property Name="AspNetUserId" Type="nvarchar" MaxLength="128" />
-          <Property Name="HandID" Type="int" Nullable="false" />
+          <Property Name="BookStateId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="State" Type="nchar" MaxLength="10" />
         </EntityType>
-        <EntityType Name="Handlings">
+        <EntityType Name="LibrarianApplication">
           <Key>
-            <PropertyRef Name="HandID" />
+            <PropertyRef Name="LibrarianAppId" />
           </Key>
-          <Property Name="HandID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Interacts">
-          <Key>
-            <PropertyRef Name="InterID" />
-          </Key>
-          <Property Name="InterID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BookID" Type="int" Nullable="false" />
-          <Property Name="AspNetUsersID" Type="nvarchar" MaxLength="128" />
-          <Property Name="Date" Type="datetime" />
+          <Property Name="LibrarianAppId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AspNetLibrarianId" Type="nvarchar" MaxLength="128" />
+          <Property Name="AspNetSuperUser" Type="nvarchar" MaxLength="128" />
+          <Property Name="DateApplied" Type="date" />
+          <Property Name="DateAccepted" Type="date" />
+          <Property Name="LibId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Libraries">
           <Key>
@@ -119,13 +127,38 @@
           <Property Name="Tel" Type="nchar" MaxLength="20" Nullable="false" />
           <Property Name="Email" Type="nchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="Petitions">
+        <EntityType Name="Loans">
           <Key>
-            <PropertyRef Name="PetID" />
+            <PropertyRef Name="LoanId" />
           </Key>
-          <Property Name="PetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LibID" Type="int" Nullable="false" />
-          <Property Name="AspNetUsersId" Type="nvarchar" MaxLength="128" />
+          <Property Name="LoanId" Type="int" Nullable="false" />
+          <Property Name="AspNetUserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="BookId" Type="int" Nullable="false" />
+          <Property Name="AspNetLibrarianId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="DateLended" Type="date" Nullable="false" />
+          <Property Name="DateReturned" Type="date" />
+          <Property Name="DateToBeReturned" Type="date" />
+          <Property Name="Extended" Type="bit" />
+          <Property Name="ReservationId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rating">
+          <Key>
+            <PropertyRef Name="RatingId" />
+          </Key>
+          <Property Name="RatingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AspNetUserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Rating" Type="int" Nullable="false" />
+          <Property Name="BookId" Type="int" Nullable="false" />
+          <Property Name="DateOfRating" Type="date" />
+        </EntityType>
+        <EntityType Name="Reservations">
+          <Key>
+            <PropertyRef Name="ReservationsId" />
+          </Key>
+          <Property Name="ReservationsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BookId" Type="int" Nullable="false" />
+          <Property Name="AspNetUserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="DateOfReservation" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -137,27 +170,39 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <Association Name="Books_Handles">
-          <End Role="Books" Type="Self.Books" Multiplicity="1" />
-          <End Role="Handles" Type="Self.Handles" Multiplicity="*" />
+        <Association Name="FK_Applications_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Applications" Type="Self.Applications" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Books">
-              <PropertyRef Name="BookID" />
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Handles">
-              <PropertyRef Name="BookID" />
+            <Dependent Role="Applications">
+              <PropertyRef Name="AspNetUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Books_Interacts">
-          <End Role="Books" Type="Self.Books" Multiplicity="1" />
-          <End Role="Interacts" Type="Self.Interacts" Multiplicity="*" />
+        <Association Name="FK_Applications_AspNetUsers1">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Applications" Type="Self.Applications" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Books">
-              <PropertyRef Name="BookID" />
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Interacts">
-              <PropertyRef Name="BookID" />
+            <Dependent Role="Applications">
+              <PropertyRef Name="AspNetLibrarianId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Applications_Libraries">
+          <End Role="Libraries" Type="Self.Libraries" Multiplicity="1" />
+          <End Role="Applications" Type="Self.Applications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Libraries">
+              <PropertyRef Name="LibID" />
+            </Principal>
+            <Dependent Role="Applications">
+              <PropertyRef Name="LibId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -169,6 +214,30 @@
               <PropertyRef Name="LibID" />
             </Principal>
             <Dependent Role="AspNetUsers">
+              <PropertyRef Name="LibID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Books_BookState">
+          <End Role="BookState" Type="Self.BookState" Multiplicity="1" />
+          <End Role="Books" Type="Self.Books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BookState">
+              <PropertyRef Name="BookStateId" />
+            </Principal>
+            <Dependent Role="Books">
+              <PropertyRef Name="BookState" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Books_Libraries">
+          <End Role="Libraries" Type="Self.Libraries" Multiplicity="1" />
+          <End Role="Books" Type="Self.Books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Libraries">
+              <PropertyRef Name="LibID" />
+            </Principal>
+            <Dependent Role="Books">
               <PropertyRef Name="LibID" />
             </Dependent>
           </ReferentialConstraint>
@@ -229,91 +298,177 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Handles_AspNetUsers">
+        <Association Name="FK_LibrarianApplication_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="Handles" Type="Self.Handles" Multiplicity="*" />
+          <End Role="LibrarianApplication" Type="Self.LibrarianApplication" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Handles">
-              <PropertyRef Name="AspNetUserId" />
+            <Dependent Role="LibrarianApplication">
+              <PropertyRef Name="AspNetLibrarianId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Interacts_AspNetUsers">
+        <Association Name="FK_LibrarianApplication_AspNetUsers1">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="Interacts" Type="Self.Interacts" Multiplicity="*" />
+          <End Role="LibrarianApplication" Type="Self.LibrarianApplication" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Interacts">
-              <PropertyRef Name="AspNetUsersID" />
+            <Dependent Role="LibrarianApplication">
+              <PropertyRef Name="AspNetSuperUser" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Petitions_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="Petitions" Type="Self.Petitions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Petitions">
-              <PropertyRef Name="AspNetUsersId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Handlings_Handles">
-          <End Role="Handlings" Type="Self.Handlings" Multiplicity="1" />
-          <End Role="Handles" Type="Self.Handles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Handlings">
-              <PropertyRef Name="HandID" />
-            </Principal>
-            <Dependent Role="Handles">
-              <PropertyRef Name="HandID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Libraries_Petitions">
+        <Association Name="FK_LibrarianApplication_Libraries">
           <End Role="Libraries" Type="Self.Libraries" Multiplicity="1" />
-          <End Role="Petitions" Type="Self.Petitions" Multiplicity="*" />
+          <End Role="LibrarianApplication" Type="Self.LibrarianApplication" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Libraries">
               <PropertyRef Name="LibID" />
             </Principal>
-            <Dependent Role="Petitions">
-              <PropertyRef Name="LibID" />
+            <Dependent Role="LibrarianApplication">
+              <PropertyRef Name="LibId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Loans_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Loans" Type="Self.Loans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Loans">
+              <PropertyRef Name="AspNetUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Loans_AspNetUsers1">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Loans" Type="Self.Loans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Loans">
+              <PropertyRef Name="AspNetLibrarianId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Loans_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="Loans" Type="Self.Loans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="Loans">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Loans_Reservations">
+          <End Role="Reservations" Type="Self.Reservations" Multiplicity="1" />
+          <End Role="Loans" Type="Self.Loans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reservations">
+              <PropertyRef Name="ReservationsId" />
+            </Principal>
+            <Dependent Role="Loans">
+              <PropertyRef Name="ReservationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rating_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Rating" Type="Self.Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="AspNetUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rating_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="Rating" Type="Self.Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservations_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Reservations" Type="Self.Reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reservations">
+              <PropertyRef Name="AspNetUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservations_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="Reservations" Type="Self.Reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="Reservations">
+              <PropertyRef Name="BookId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="VRLibModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Applications" EntityType="Self.Applications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Handles" EntityType="Self.Handles" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Handlings" EntityType="Self.Handlings" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Interacts" EntityType="Self.Interacts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookState" EntityType="Self.BookState" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LibrarianApplication" EntityType="Self.LibrarianApplication" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Libraries" EntityType="Self.Libraries" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Petitions" EntityType="Self.Petitions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Loans" EntityType="Self.Loans" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rating" EntityType="Self.Rating" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reservations" EntityType="Self.Reservations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="Books_Handles" Association="Self.Books_Handles">
-            <End Role="Books" EntitySet="Books" />
-            <End Role="Handles" EntitySet="Handles" />
+          <AssociationSet Name="FK_Applications_AspNetUsers" Association="Self.FK_Applications_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Applications" EntitySet="Applications" />
           </AssociationSet>
-          <AssociationSet Name="Books_Interacts" Association="Self.Books_Interacts">
-            <End Role="Books" EntitySet="Books" />
-            <End Role="Interacts" EntitySet="Interacts" />
+          <AssociationSet Name="FK_Applications_AspNetUsers1" Association="Self.FK_Applications_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Applications" EntitySet="Applications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Applications_Libraries" Association="Self.FK_Applications_Libraries">
+            <End Role="Libraries" EntitySet="Libraries" />
+            <End Role="Applications" EntitySet="Applications" />
           </AssociationSet>
           <AssociationSet Name="FK_AspNetUsers_Libraries" Association="Self.FK_AspNetUsers_Libraries">
             <End Role="Libraries" EntitySet="Libraries" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Books_BookState" Association="Self.FK_Books_BookState">
+            <End Role="BookState" EntitySet="BookState" />
+            <End Role="Books" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Books_Libraries" Association="Self.FK_Books_Libraries">
+            <End Role="Libraries" EntitySet="Libraries" />
+            <End Role="Books" EntitySet="Books" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -331,25 +486,49 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK_Handles_AspNetUsers" Association="Self.FK_Handles_AspNetUsers">
+          <AssociationSet Name="FK_LibrarianApplication_AspNetUsers" Association="Self.FK_LibrarianApplication_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Handles" EntitySet="Handles" />
+            <End Role="LibrarianApplication" EntitySet="LibrarianApplication" />
           </AssociationSet>
-          <AssociationSet Name="FK_Interacts_AspNetUsers" Association="Self.FK_Interacts_AspNetUsers">
+          <AssociationSet Name="FK_LibrarianApplication_AspNetUsers1" Association="Self.FK_LibrarianApplication_AspNetUsers1">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Interacts" EntitySet="Interacts" />
+            <End Role="LibrarianApplication" EntitySet="LibrarianApplication" />
           </AssociationSet>
-          <AssociationSet Name="FK_Petitions_AspNetUsers" Association="Self.FK_Petitions_AspNetUsers">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Petitions" EntitySet="Petitions" />
-          </AssociationSet>
-          <AssociationSet Name="Handlings_Handles" Association="Self.Handlings_Handles">
-            <End Role="Handlings" EntitySet="Handlings" />
-            <End Role="Handles" EntitySet="Handles" />
-          </AssociationSet>
-          <AssociationSet Name="Libraries_Petitions" Association="Self.Libraries_Petitions">
+          <AssociationSet Name="FK_LibrarianApplication_Libraries" Association="Self.FK_LibrarianApplication_Libraries">
             <End Role="Libraries" EntitySet="Libraries" />
-            <End Role="Petitions" EntitySet="Petitions" />
+            <End Role="LibrarianApplication" EntitySet="LibrarianApplication" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Loans_AspNetUsers" Association="Self.FK_Loans_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Loans" EntitySet="Loans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Loans_AspNetUsers1" Association="Self.FK_Loans_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Loans" EntitySet="Loans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Loans_Books" Association="Self.FK_Loans_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Loans" EntitySet="Loans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Loans_Reservations" Association="Self.FK_Loans_Reservations">
+            <End Role="Reservations" EntitySet="Reservations" />
+            <End Role="Loans" EntitySet="Loans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rating_AspNetUsers" Association="Self.FK_Rating_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Rating" EntitySet="Rating" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rating_Books" Association="Self.FK_Rating_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Rating" EntitySet="Rating" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservations_AspNetUsers" Association="Self.FK_Reservations_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Reservations" EntitySet="Reservations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservations_Books" Association="Self.FK_Reservations_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Reservations" EntitySet="Reservations" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -366,6 +545,20 @@
           <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
           <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Application">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+          </Key>
+          <Property Name="ApplicationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LibId" Type="Int32" Nullable="false" />
+          <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfApplication" Type="DateTime" Precision="0" />
+          <Property Name="DateOfVerification" Type="DateTime" Precision="0" />
+          <Property Name="AspNetLibrarianId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Applications_AspNetUsers" FromRole="Applications" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUser1" Relationship="Self.FK_Applications_AspNetUsers1" FromRole="Applications" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Library" Relationship="Self.FK_Applications_Libraries" FromRole="Applications" ToRole="Libraries" />
         </EntityType>
         <EntityType Name="AspNetRole">
           <Key>
@@ -415,12 +608,17 @@
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Surname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LibID" Type="Int32" />
+          <NavigationProperty Name="Applications" Relationship="Self.FK_Applications_AspNetUsers" FromRole="AspNetUsers" ToRole="Applications" />
+          <NavigationProperty Name="Applications1" Relationship="Self.FK_Applications_AspNetUsers1" FromRole="AspNetUsers" ToRole="Applications" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
           <NavigationProperty Name="Library" Relationship="Self.FK_AspNetUsers_Libraries" FromRole="AspNetUsers" ToRole="Libraries" />
-          <NavigationProperty Name="Handles" Relationship="Self.FK_Handles_AspNetUsers" FromRole="AspNetUsers" ToRole="Handles" />
-          <NavigationProperty Name="Interacts" Relationship="Self.FK_Interacts_AspNetUsers" FromRole="AspNetUsers" ToRole="Interacts" />
-          <NavigationProperty Name="Petitions" Relationship="Self.FK_Petitions_AspNetUsers" FromRole="AspNetUsers" ToRole="Petitions" />
+          <NavigationProperty Name="LibrarianApplications" Relationship="Self.FK_LibrarianApplication_AspNetUsers" FromRole="AspNetUsers" ToRole="LibrarianApplication" />
+          <NavigationProperty Name="LibrarianApplications1" Relationship="Self.FK_LibrarianApplication_AspNetUsers1" FromRole="AspNetUsers" ToRole="LibrarianApplication" />
+          <NavigationProperty Name="Loans" Relationship="Self.FK_Loans_AspNetUsers" FromRole="AspNetUsers" ToRole="Loans" />
+          <NavigationProperty Name="Loans1" Relationship="Self.FK_Loans_AspNetUsers1" FromRole="AspNetUsers" ToRole="Loans" />
+          <NavigationProperty Name="Ratings" Relationship="Self.FK_Rating_AspNetUsers" FromRole="AspNetUsers" ToRole="Rating" />
+          <NavigationProperty Name="Reservations" Relationship="Self.FK_Reservations_AspNetUsers" FromRole="AspNetUsers" ToRole="Reservations" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
         </EntityType>
         <EntityType Name="Book">
@@ -432,44 +630,42 @@
           <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Publisher" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ISBN" Type="Int64" Nullable="false" />
-          <Property Name="LibID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LibID" Type="Int32" Nullable="false" />
           <Property Name="Shelf" Type="Binary" MaxLength="10" FixedLength="false" />
           <Property Name="Subject" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Rating" Type="Decimal" Precision="2" Scale="2" />
-          <Property Name="State" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Handles" Relationship="Self.Books_Handles" FromRole="Books" ToRole="Handles" />
-          <NavigationProperty Name="Interacts" Relationship="Self.Books_Interacts" FromRole="Books" ToRole="Interacts" />
+          <Property Name="BookState" Type="Int32" Nullable="false" />
+          <Property Name="ImagePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="true" Unicode="true" />
+          <Property Name="NoOfRaters" Type="Int32" />
+          <NavigationProperty Name="BookState1" Relationship="Self.FK_Books_BookState" FromRole="Books" ToRole="BookState" />
+          <NavigationProperty Name="Library" Relationship="Self.FK_Books_Libraries" FromRole="Books" ToRole="Libraries" />
+          <NavigationProperty Name="Loans" Relationship="Self.FK_Loans_Books" FromRole="Books" ToRole="Loans" />
+          <NavigationProperty Name="Ratings" Relationship="Self.FK_Rating_Books" FromRole="Books" ToRole="Rating" />
+          <NavigationProperty Name="Reservations" Relationship="Self.FK_Reservations_Books" FromRole="Books" ToRole="Reservations" />
         </EntityType>
-        <EntityType Name="Handle">
+        <EntityType Name="BookState">
           <Key>
-            <PropertyRef Name="LogID" />
+            <PropertyRef Name="BookStateId" />
           </Key>
-          <Property Name="LogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BookID" Type="Int32" Nullable="false" />
-          <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="HandID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Handles_AspNetUsers" FromRole="Handles" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Book" Relationship="Self.Books_Handles" FromRole="Handles" ToRole="Books" />
-          <NavigationProperty Name="Handling" Relationship="Self.Handlings_Handles" FromRole="Handles" ToRole="Handlings" />
+          <Property Name="BookStateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="State" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Books" Relationship="Self.FK_Books_BookState" FromRole="BookState" ToRole="Books" />
         </EntityType>
-        <EntityType Name="Handling">
+        <EntityType Name="LibrarianApplication">
           <Key>
-            <PropertyRef Name="HandID" />
+            <PropertyRef Name="LibrarianAppId" />
           </Key>
-          <Property Name="HandID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Handles" Relationship="Self.Handlings_Handles" FromRole="Handlings" ToRole="Handles" />
-        </EntityType>
-        <EntityType Name="Interact">
-          <Key>
-            <PropertyRef Name="InterID" />
-          </Key>
-          <Property Name="InterID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BookID" Type="Int32" Nullable="false" />
-          <Property Name="AspNetUsersID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Date" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Interacts_AspNetUsers" FromRole="Interacts" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Book" Relationship="Self.Books_Interacts" FromRole="Interacts" ToRole="Books" />
+          <Property Name="LibrarianAppId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AspNetLibrarianId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="AspNetSuperUser" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DateApplied" Type="DateTime" Precision="0" />
+          <Property Name="DateAccepted" Type="DateTime" Precision="0" />
+          <Property Name="LibId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_LibrarianApplication_AspNetUsers" FromRole="LibrarianApplication" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUser1" Relationship="Self.FK_LibrarianApplication_AspNetUsers1" FromRole="LibrarianApplication" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Library" Relationship="Self.FK_LibrarianApplication_Libraries" FromRole="LibrarianApplication" ToRole="Libraries" />
         </EntityType>
         <EntityType Name="Library">
           <Key>
@@ -480,18 +676,52 @@
           <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Tel" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Applications" Relationship="Self.FK_Applications_Libraries" FromRole="Libraries" ToRole="Applications" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_AspNetUsers_Libraries" FromRole="Libraries" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Petitions" Relationship="Self.Libraries_Petitions" FromRole="Libraries" ToRole="Petitions" />
+          <NavigationProperty Name="Books" Relationship="Self.FK_Books_Libraries" FromRole="Libraries" ToRole="Books" />
+          <NavigationProperty Name="LibrarianApplications" Relationship="Self.FK_LibrarianApplication_Libraries" FromRole="Libraries" ToRole="LibrarianApplication" />
         </EntityType>
-        <EntityType Name="Petition">
+        <EntityType Name="Loan">
           <Key>
-            <PropertyRef Name="PetID" />
+            <PropertyRef Name="LoanId" />
           </Key>
-          <Property Name="PetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LibID" Type="Int32" Nullable="false" />
-          <Property Name="AspNetUsersId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Petitions_AspNetUsers" FromRole="Petitions" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Library" Relationship="Self.Libraries_Petitions" FromRole="Petitions" ToRole="Libraries" />
+          <Property Name="LoanId" Type="Int32" Nullable="false" />
+          <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="AspNetLibrarianId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateLended" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateReturned" Type="DateTime" Precision="0" />
+          <Property Name="DateToBeReturned" Type="DateTime" Precision="0" />
+          <Property Name="Extended" Type="Boolean" />
+          <Property Name="ReservationId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Loans_AspNetUsers" FromRole="Loans" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUser1" Relationship="Self.FK_Loans_AspNetUsers1" FromRole="Loans" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Book" Relationship="Self.FK_Loans_Books" FromRole="Loans" ToRole="Books" />
+          <NavigationProperty Name="Reservation" Relationship="Self.FK_Loans_Reservations" FromRole="Loans" ToRole="Reservations" />
+        </EntityType>
+        <EntityType Name="Rating">
+          <Key>
+            <PropertyRef Name="RatingId" />
+          </Key>
+          <Property Name="RatingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Rating1" Type="Int32" Nullable="false" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="DateOfRating" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Rating_AspNetUsers" FromRole="Rating" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Book" Relationship="Self.FK_Rating_Books" FromRole="Rating" ToRole="Books" />
+        </EntityType>
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="ReservationsId" />
+          </Key>
+          <Property Name="ReservationsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateOfReservation" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Reservations_AspNetUsers" FromRole="Reservations" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Book" Relationship="Self.FK_Reservations_Books" FromRole="Reservations" ToRole="Books" />
+          <NavigationProperty Name="Loans" Relationship="Self.FK_Loans_Reservations" FromRole="Reservations" ToRole="Loans" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -503,6 +733,42 @@
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
+        <Association Name="FK_Applications_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+          <End Role="Applications" Type="Self.Application" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Applications">
+              <PropertyRef Name="AspNetUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Applications_AspNetUsers1">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+          <End Role="Applications" Type="Self.Application" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Applications">
+              <PropertyRef Name="AspNetLibrarianId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Applications_Libraries">
+          <End Role="Libraries" Type="Self.Library" Multiplicity="1" />
+          <End Role="Applications" Type="Self.Application" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Libraries">
+              <PropertyRef Name="LibID" />
+            </Principal>
+            <Dependent Role="Applications">
+              <PropertyRef Name="LibId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -543,87 +809,159 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Handles_AspNetUsers">
+        <Association Name="FK_LibrarianApplication_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
-          <End Role="Handles" Type="Self.Handle" Multiplicity="*" />
+          <End Role="LibrarianApplication" Type="Self.LibrarianApplication" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Handles">
+            <Dependent Role="LibrarianApplication">
+              <PropertyRef Name="AspNetLibrarianId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LibrarianApplication_AspNetUsers1">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+          <End Role="LibrarianApplication" Type="Self.LibrarianApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LibrarianApplication">
+              <PropertyRef Name="AspNetSuperUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Loans_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+          <End Role="Loans" Type="Self.Loan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Loans">
               <PropertyRef Name="AspNetUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Interacts_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
-          <End Role="Interacts" Type="Self.Interact" Multiplicity="*" />
+        <Association Name="FK_Loans_AspNetUsers1">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+          <End Role="Loans" Type="Self.Loan" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Interacts">
-              <PropertyRef Name="AspNetUsersID" />
+            <Dependent Role="Loans">
+              <PropertyRef Name="AspNetLibrarianId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Petitions_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
-          <End Role="Petitions" Type="Self.Petition" Multiplicity="*" />
+        <Association Name="FK_Rating_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+          <End Role="Rating" Type="Self.Rating" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Petitions">
-              <PropertyRef Name="AspNetUsersId" />
+            <Dependent Role="Rating">
+              <PropertyRef Name="AspNetUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Books_Handles">
-          <End Role="Books" Type="Self.Book" Multiplicity="1" />
-          <End Role="Handles" Type="Self.Handle" Multiplicity="*" />
+        <Association Name="FK_Reservations_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+          <End Role="Reservations" Type="Self.Reservation" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Books">
-              <PropertyRef Name="BookID" />
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Handles">
-              <PropertyRef Name="BookID" />
+            <Dependent Role="Reservations">
+              <PropertyRef Name="AspNetUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Books_Interacts">
-          <End Role="Books" Type="Self.Book" Multiplicity="1" />
-          <End Role="Interacts" Type="Self.Interact" Multiplicity="*" />
+        <Association Name="FK_Books_BookState">
+          <End Role="BookState" Type="Self.BookState" Multiplicity="1" />
+          <End Role="Books" Type="Self.Book" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Books">
-              <PropertyRef Name="BookID" />
+            <Principal Role="BookState">
+              <PropertyRef Name="BookStateId" />
             </Principal>
-            <Dependent Role="Interacts">
-              <PropertyRef Name="BookID" />
+            <Dependent Role="Books">
+              <PropertyRef Name="BookState" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Handlings_Handles">
-          <End Role="Handlings" Type="Self.Handling" Multiplicity="1" />
-          <End Role="Handles" Type="Self.Handle" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Handlings">
-              <PropertyRef Name="HandID" />
-            </Principal>
-            <Dependent Role="Handles">
-              <PropertyRef Name="HandID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Libraries_Petitions">
+        <Association Name="FK_Books_Libraries">
           <End Role="Libraries" Type="Self.Library" Multiplicity="1" />
-          <End Role="Petitions" Type="Self.Petition" Multiplicity="*" />
+          <End Role="Books" Type="Self.Book" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Libraries">
               <PropertyRef Name="LibID" />
             </Principal>
-            <Dependent Role="Petitions">
+            <Dependent Role="Books">
               <PropertyRef Name="LibID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Loans_Books">
+          <End Role="Books" Type="Self.Book" Multiplicity="1" />
+          <End Role="Loans" Type="Self.Loan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="Loans">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rating_Books">
+          <End Role="Books" Type="Self.Book" Multiplicity="1" />
+          <End Role="Rating" Type="Self.Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservations_Books">
+          <End Role="Books" Type="Self.Book" Multiplicity="1" />
+          <End Role="Reservations" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="Reservations">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LibrarianApplication_Libraries">
+          <End Role="Libraries" Type="Self.Library" Multiplicity="1" />
+          <End Role="LibrarianApplication" Type="Self.LibrarianApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Libraries">
+              <PropertyRef Name="LibID" />
+            </Principal>
+            <Dependent Role="LibrarianApplication">
+              <PropertyRef Name="LibId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Loans_Reservations">
+          <End Role="Reservations" Type="Self.Reservation" Multiplicity="1" />
+          <End Role="Loans" Type="Self.Loan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reservations">
+              <PropertyRef Name="ReservationsId" />
+            </Principal>
+            <Dependent Role="Loans">
+              <PropertyRef Name="ReservationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -633,17 +971,31 @@
         </Association>
         <EntityContainer Name="VRLibEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
+          <EntitySet Name="Applications" EntityType="Self.Application" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
           <EntitySet Name="Books" EntityType="Self.Book" />
-          <EntitySet Name="Handles" EntityType="Self.Handle" />
-          <EntitySet Name="Handlings" EntityType="Self.Handling" />
-          <EntitySet Name="Interacts" EntityType="Self.Interact" />
+          <EntitySet Name="BookStates" EntityType="Self.BookState" />
+          <EntitySet Name="LibrarianApplications" EntityType="Self.LibrarianApplication" />
           <EntitySet Name="Libraries" EntityType="Self.Library" />
-          <EntitySet Name="Petitions" EntityType="Self.Petition" />
+          <EntitySet Name="Loans" EntityType="Self.Loan" />
+          <EntitySet Name="Ratings" EntityType="Self.Rating" />
+          <EntitySet Name="Reservations" EntityType="Self.Reservation" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_Applications_AspNetUsers" Association="Self.FK_Applications_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Applications" EntitySet="Applications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Applications_AspNetUsers1" Association="Self.FK_Applications_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Applications" EntitySet="Applications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Applications_Libraries" Association="Self.FK_Applications_Libraries">
+            <End Role="Libraries" EntitySet="Libraries" />
+            <End Role="Applications" EntitySet="Applications" />
+          </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -656,33 +1008,57 @@
             <End Role="Libraries" EntitySet="Libraries" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
-          <AssociationSet Name="FK_Handles_AspNetUsers" Association="Self.FK_Handles_AspNetUsers">
+          <AssociationSet Name="FK_LibrarianApplication_AspNetUsers" Association="Self.FK_LibrarianApplication_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Handles" EntitySet="Handles" />
+            <End Role="LibrarianApplication" EntitySet="LibrarianApplications" />
           </AssociationSet>
-          <AssociationSet Name="FK_Interacts_AspNetUsers" Association="Self.FK_Interacts_AspNetUsers">
+          <AssociationSet Name="FK_LibrarianApplication_AspNetUsers1" Association="Self.FK_LibrarianApplication_AspNetUsers1">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Interacts" EntitySet="Interacts" />
+            <End Role="LibrarianApplication" EntitySet="LibrarianApplications" />
           </AssociationSet>
-          <AssociationSet Name="FK_Petitions_AspNetUsers" Association="Self.FK_Petitions_AspNetUsers">
+          <AssociationSet Name="FK_Loans_AspNetUsers" Association="Self.FK_Loans_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Petitions" EntitySet="Petitions" />
+            <End Role="Loans" EntitySet="Loans" />
           </AssociationSet>
-          <AssociationSet Name="Books_Handles" Association="Self.Books_Handles">
+          <AssociationSet Name="FK_Loans_AspNetUsers1" Association="Self.FK_Loans_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Loans" EntitySet="Loans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rating_AspNetUsers" Association="Self.FK_Rating_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Rating" EntitySet="Ratings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservations_AspNetUsers" Association="Self.FK_Reservations_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Reservations" EntitySet="Reservations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Books_BookState" Association="Self.FK_Books_BookState">
+            <End Role="BookState" EntitySet="BookStates" />
             <End Role="Books" EntitySet="Books" />
-            <End Role="Handles" EntitySet="Handles" />
           </AssociationSet>
-          <AssociationSet Name="Books_Interacts" Association="Self.Books_Interacts">
-            <End Role="Books" EntitySet="Books" />
-            <End Role="Interacts" EntitySet="Interacts" />
-          </AssociationSet>
-          <AssociationSet Name="Handlings_Handles" Association="Self.Handlings_Handles">
-            <End Role="Handlings" EntitySet="Handlings" />
-            <End Role="Handles" EntitySet="Handles" />
-          </AssociationSet>
-          <AssociationSet Name="Libraries_Petitions" Association="Self.Libraries_Petitions">
+          <AssociationSet Name="FK_Books_Libraries" Association="Self.FK_Books_Libraries">
             <End Role="Libraries" EntitySet="Libraries" />
-            <End Role="Petitions" EntitySet="Petitions" />
+            <End Role="Books" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Loans_Books" Association="Self.FK_Loans_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Loans" EntitySet="Loans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rating_Books" Association="Self.FK_Rating_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Rating" EntitySet="Ratings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservations_Books" Association="Self.FK_Reservations_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Reservations" EntitySet="Reservations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LibrarianApplication_Libraries" Association="Self.FK_LibrarianApplication_Libraries">
+            <End Role="Libraries" EntitySet="Libraries" />
+            <End Role="LibrarianApplication" EntitySet="LibrarianApplications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Loans_Reservations" Association="Self.FK_Loans_Reservations">
+            <End Role="Reservations" EntitySet="Reservations" />
+            <End Role="Loans" EntitySet="Loans" />
           </AssociationSet>
           <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
@@ -702,6 +1078,18 @@
                 <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
                 <ScalarProperty Name="Model" ColumnName="Model" />
                 <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Applications">
+            <EntityTypeMapping TypeName="VRLibModel.Application">
+              <MappingFragment StoreEntitySet="Applications">
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="LibId" ColumnName="LibId" />
+                <ScalarProperty Name="AspNetUserId" ColumnName="AspNetUserId" />
+                <ScalarProperty Name="DateOfApplication" ColumnName="DateOfApplication" />
+                <ScalarProperty Name="DateOfVerification" ColumnName="DateOfVerification" />
+                <ScalarProperty Name="AspNetLibrarianId" ColumnName="AspNetLibrarianId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -765,35 +1153,31 @@
                 <ScalarProperty Name="Shelf" ColumnName="Shelf" />
                 <ScalarProperty Name="Subject" ColumnName="Subject" />
                 <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="BookState" ColumnName="BookState" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="AspNetUserId" ColumnName="AspNetUserId" />
+                <ScalarProperty Name="NoOfRaters" ColumnName="NoOfRaters" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookStates">
+            <EntityTypeMapping TypeName="VRLibModel.BookState">
+              <MappingFragment StoreEntitySet="BookState">
+                <ScalarProperty Name="BookStateId" ColumnName="BookStateId" />
                 <ScalarProperty Name="State" ColumnName="State" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Handles">
-            <EntityTypeMapping TypeName="VRLibModel.Handle">
-              <MappingFragment StoreEntitySet="Handles">
-                <ScalarProperty Name="LogID" ColumnName="LogID" />
-                <ScalarProperty Name="BookID" ColumnName="BookID" />
-                <ScalarProperty Name="AspNetUserId" ColumnName="AspNetUserId" />
-                <ScalarProperty Name="HandID" ColumnName="HandID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Handlings">
-            <EntityTypeMapping TypeName="VRLibModel.Handling">
-              <MappingFragment StoreEntitySet="Handlings">
-                <ScalarProperty Name="HandID" ColumnName="HandID" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Interacts">
-            <EntityTypeMapping TypeName="VRLibModel.Interact">
-              <MappingFragment StoreEntitySet="Interacts">
-                <ScalarProperty Name="InterID" ColumnName="InterID" />
-                <ScalarProperty Name="BookID" ColumnName="BookID" />
-                <ScalarProperty Name="AspNetUsersID" ColumnName="AspNetUsersID" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
+          <EntitySetMapping Name="LibrarianApplications">
+            <EntityTypeMapping TypeName="VRLibModel.LibrarianApplication">
+              <MappingFragment StoreEntitySet="LibrarianApplication">
+                <ScalarProperty Name="LibrarianAppId" ColumnName="LibrarianAppId" />
+                <ScalarProperty Name="AspNetLibrarianId" ColumnName="AspNetLibrarianId" />
+                <ScalarProperty Name="AspNetSuperUser" ColumnName="AspNetSuperUser" />
+                <ScalarProperty Name="DateApplied" ColumnName="DateApplied" />
+                <ScalarProperty Name="DateAccepted" ColumnName="DateAccepted" />
+                <ScalarProperty Name="LibId" ColumnName="LibId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -808,12 +1192,39 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Petitions">
-            <EntityTypeMapping TypeName="VRLibModel.Petition">
-              <MappingFragment StoreEntitySet="Petitions">
-                <ScalarProperty Name="PetID" ColumnName="PetID" />
-                <ScalarProperty Name="LibID" ColumnName="LibID" />
-                <ScalarProperty Name="AspNetUsersId" ColumnName="AspNetUsersId" />
+          <EntitySetMapping Name="Loans">
+            <EntityTypeMapping TypeName="VRLibModel.Loan">
+              <MappingFragment StoreEntitySet="Loans">
+                <ScalarProperty Name="LoanId" ColumnName="LoanId" />
+                <ScalarProperty Name="AspNetUserId" ColumnName="AspNetUserId" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="AspNetLibrarianId" ColumnName="AspNetLibrarianId" />
+                <ScalarProperty Name="DateLended" ColumnName="DateLended" />
+                <ScalarProperty Name="DateReturned" ColumnName="DateReturned" />
+                <ScalarProperty Name="DateToBeReturned" ColumnName="DateToBeReturned" />
+                <ScalarProperty Name="Extended" ColumnName="Extended" />
+                <ScalarProperty Name="ReservationId" ColumnName="ReservationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ratings">
+            <EntityTypeMapping TypeName="VRLibModel.Rating">
+              <MappingFragment StoreEntitySet="Rating">
+                <ScalarProperty Name="RatingId" ColumnName="RatingId" />
+                <ScalarProperty Name="AspNetUserId" ColumnName="AspNetUserId" />
+                <ScalarProperty Name="Rating1" ColumnName="Rating" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="DateOfRating" ColumnName="DateOfRating" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reservations">
+            <EntityTypeMapping TypeName="VRLibModel.Reservation">
+              <MappingFragment StoreEntitySet="Reservations">
+                <ScalarProperty Name="ReservationsId" ColumnName="ReservationsId" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="AspNetUserId" ColumnName="AspNetUserId" />
+                <ScalarProperty Name="DateOfReservation" ColumnName="DateOfReservation" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

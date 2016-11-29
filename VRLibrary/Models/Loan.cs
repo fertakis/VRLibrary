@@ -12,14 +12,21 @@ namespace VRLibrary.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Interact
+    public partial class Loan
     {
-        public int InterID { get; set; }
-        public int BookID { get; set; }
-        public string AspNetUsersID { get; set; }
-        public Nullable<System.DateTime> Date { get; set; }
+        public int LoanId { get; set; }
+        public string AspNetUserId { get; set; }
+        public int BookId { get; set; }
+        public string AspNetLibrarianId { get; set; }
+        public System.DateTime DateLended { get; set; }
+        public Nullable<System.DateTime> DateReturned { get; set; }
+        public Nullable<System.DateTime> DateToBeReturned { get; set; }
+        public Nullable<bool> Extended { get; set; }
+        public int ReservationId { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual Book Book { get; set; }
+        public virtual Reservation Reservation { get; set; }
     }
 }

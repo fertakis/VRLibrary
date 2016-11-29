@@ -12,15 +12,17 @@ namespace VRLibrary.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Handle
+    public partial class Application
     {
-        public int LogID { get; set; }
-        public int BookID { get; set; }
+        public int ApplicationId { get; set; }
+        public int LibId { get; set; }
         public string AspNetUserId { get; set; }
-        public int HandID { get; set; }
+        public Nullable<System.DateTime> DateOfApplication { get; set; }
+        public Nullable<System.DateTime> DateOfVerification { get; set; }
+        public string AspNetLibrarianId { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
-        public virtual Book Book { get; set; }
-        public virtual Handling Handling { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
+        public virtual Library Library { get; set; }
     }
 }

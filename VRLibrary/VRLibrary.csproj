@@ -170,14 +170,15 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\BooksController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LibrariesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Application.cs">
+      <DependentUpon>VRLibraryDataAccess.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\AspNetRole.cs">
       <DependentUpon>VRLibraryDataAccess.tt</DependentUpon>
     </Compile>
@@ -193,24 +194,27 @@
     <Compile Include="Models\Book.cs">
       <DependentUpon>VRLibraryDataAccess.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BookState.cs">
+      <DependentUpon>VRLibraryDataAccess.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\C__MigrationHistory.cs">
       <DependentUpon>VRLibraryDataAccess.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Handle.cs">
-      <DependentUpon>VRLibraryDataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Handling.cs">
-      <DependentUpon>VRLibraryDataAccess.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\Interact.cs">
+    <Compile Include="Models\LibrarianApplication.cs">
       <DependentUpon>VRLibraryDataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Library.cs">
       <DependentUpon>VRLibraryDataAccess.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Loan.cs">
+      <DependentUpon>VRLibraryDataAccess.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Petition.cs">
+    <Compile Include="Models\Rating.cs">
+      <DependentUpon>VRLibraryDataAccess.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Reservation.cs">
       <DependentUpon>VRLibraryDataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sysdiagram.cs">
@@ -272,7 +276,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -306,16 +312,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Books\Create.cshtml" />
-    <Content Include="Views\Books\Delete.cshtml" />
-    <Content Include="Views\Books\Details.cshtml" />
-    <Content Include="Views\Books\Edit.cshtml" />
-    <Content Include="Views\Books\Index.cshtml" />
-    <Content Include="Views\Libraries\Create.cshtml" />
-    <Content Include="Views\Libraries\Delete.cshtml" />
-    <Content Include="Views\Libraries\Details.cshtml" />
-    <Content Include="Views\Libraries\Edit.cshtml" />
-    <Content Include="Views\Libraries\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
