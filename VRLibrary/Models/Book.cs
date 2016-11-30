@@ -28,7 +28,7 @@ namespace VRLibrary.Models
         public string Publisher { get; set; }
         public long ISBN { get; set; }
         public int LibID { get; set; }
-        public byte[] Shelf { get; set; }
+        public string Shelf { get; set; }
         public string Subject { get; set; }
         public Nullable<decimal> Rating { get; set; }
         public int BookState { get; set; }

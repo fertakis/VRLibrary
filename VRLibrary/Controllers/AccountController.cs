@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using VRLibrary.Models;
+using System.Security.Principal;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace VRLibrary.Controllers
 {
@@ -51,7 +53,15 @@ namespace VRLibrary.Controllers
                 _userManager = value;
             }
         }
-
+        // GET:User Name & surname
+        [Authorize]
+        static public string UserName(IIdentity identity)
+        {
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = manager.FindById(identity.GetUserId());
+            var name = currentUser.Name;
+            return name.ToString();
+        }
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -151,7 +161,7 @@ namespace VRLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Surname = model.Surname };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

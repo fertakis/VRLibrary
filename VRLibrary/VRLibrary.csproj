@@ -18,7 +18,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44318</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -201,6 +201,9 @@
     <Compile Include="Models\C__MigrationHistory.cs">
       <DependentUpon>VRLibraryDataAccess.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Donation.cs">
+      <DependentUpon>VRLibraryDataAccess.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LibrarianApplication.cs">
       <DependentUpon>VRLibraryDataAccess.tt</DependentUpon>
@@ -351,7 +354,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>56052</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:56052/</IISUrl>
+          <IISUrl>https://localhost:44318/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -39,5 +39,6 @@ namespace VRLibrary.Models
         public virtual DbSet<Rating> Ratings { get; set; }
         public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<Donation> Donations { get; set; }
     }
 }
