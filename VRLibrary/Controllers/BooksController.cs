@@ -24,7 +24,7 @@ namespace VRLibrary.Controllers
                              orderby j.Subject
                              select j.Subject;
 
-            SubjectList.AddRange(SubjectQry.Distinct());
+            //SubjectList.AddRange(SubjectQry.Distinct());
 
             ViewBag.bookSubject = new SelectList(SubjectList);
 
