@@ -15,9 +15,28 @@ namespace VRLibrary.Controllers
         private VRLibEntities db = new VRLibEntities();
 
         // GET: Books
-        public ActionResult Index()
+        public ActionResult Index(string bookSubject, string searchString)
         {
+
+            var SubjectList = new List<string>();
+
+            var SubjectQry = from j in db.Books
+                             orderby j.Subject
+                             select j.Subject;
+
+            //SubjectList.AddRange(SubjectQry.Distinct());
+
+            ViewBag.bookSubject = new SelectList(SubjectList);
+
+
             var books = db.Books.Include(b => b.BookState1).Include(b => b.Library);
+            
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                books = books.Where(s => s.Title.Contains(searchString));
+            }
+
             return View(books.ToList());
         }
 
