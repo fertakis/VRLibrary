@@ -98,7 +98,7 @@
           <Property Name="Title" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Author" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Publisher" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="ISBN" Type="bigint" Nullable="false" />
+          <Property Name="ISBN" Type="char" MaxLength="13" Nullable="false" />
           <Property Name="LibID" Type="int" Nullable="false" />
           <Property Name="Shelf" Type="varchar" MaxLength="20" />
           <Property Name="Subject" Type="varchar" MaxLength="50" />
@@ -657,9 +657,9 @@
           <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Publisher" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ISBN" Type="Int64" Nullable="false" />
+          <Property Name="ISBN" Type="String" Nullable="false" MaxLength="13" Unicode="false" FixedLength="true" />
           <Property Name="LibID" Type="Int32" Nullable="false" />
-          <Property Name="Shelf" Type="String" />
+          <Property Name="Shelf" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
           <Property Name="Subject" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Rating" Type="Decimal" Precision="2" Scale="2" />
           <Property Name="BookState" Type="Int32" Nullable="false" />
