@@ -1,0 +1,82 @@
+﻿@model VRLibrary.Models.Loan
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Loan</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DateLended)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateLended)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateReturned)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateReturned)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateToBeReturned)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateToBeReturned)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Extended)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Extended)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AspNetUser.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AspNetUser.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AspNetUser1.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AspNetUser1.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Book.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Book.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Reservation.AspNetUserId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Reservation.AspNetUserId)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.LoanId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

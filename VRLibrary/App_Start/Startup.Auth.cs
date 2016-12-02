@@ -54,9 +54,9 @@ namespace VRLibrary
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "346091395755147",
+               appSecret: "4b884dbc47d4fc83f6741326739823be");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{

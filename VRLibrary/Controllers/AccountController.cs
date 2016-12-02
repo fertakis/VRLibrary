@@ -9,23 +9,29 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using VRLibrary.Models;
+using System.Security.Principal;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace VRLibrary.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private VRLibEntities db = new VRLibEntities();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private IdentityRole _roleManager;
 
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IdentityRole roleManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            //RoleManager<> = _roleManager;
+            RoleManager = roleManager;
         }
 
         public ApplicationSignInManager SignInManager
@@ -37,6 +43,17 @@ namespace VRLibrary.Controllers
             private set 
             { 
                 _signInManager = value; 
+            }
+        }
+        public IdentityRole RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().Get<IdentityRole>();
+            }
+            private set
+            {
+                _roleManager = value;
             }
         }
 
@@ -51,7 +68,15 @@ namespace VRLibrary.Controllers
                 _userManager = value;
             }
         }
-
+        // GET:User Name & surname
+        [Authorize]
+        static public string UserName(IIdentity identity)
+        {
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = manager.FindById(identity.GetUserId());
+            var name = currentUser.Name;
+            return name.ToString();
+        }
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -71,6 +96,21 @@ namespace VRLibrary.Controllers
             if (!ModelState.IsValid)
             {
                 return View(model);
+            }
+
+            // Require the user to have a confirmed email before they can log on.
+            var user = await UserManager.FindByNameAsync(model.Email);
+            if (user != null)
+            {
+                if (!await UserManager.IsEmailConfirmedAsync(user.Id))
+                {
+                    string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account-Resend");
+
+
+                    ViewBag.errorMessage = "You must have a confirmed email to log on. "
+                              + "The confirmation token has been resent to your email account.";
+                    return View("Error");
+                }
             }
 
             // This doesn't count login failures towards account lockout
@@ -139,6 +179,7 @@ namespace VRLibrary.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            ViewBag.LibID = new SelectList(db.Libraries, "LibID", "Library_Name");
             return View();
         }
 
@@ -151,24 +192,42 @@ namespace VRLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Surname = model.Surname, LibID=model.LibID };
                 var result = await UserManager.CreateAsync(user, model.Password);
+                //await RoleManager;
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    ///var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>());
+                    //roleManager
+                    var result1 = await UserManager.AddToRoleAsync(user.Id, "PendingUser");
+                    if (result1.Succeeded)
+                    {
+                        //  Comment the following line to prevent log in until the user is confirmed.
+                        //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                        string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account");
 
-                    return RedirectToAction("Index", "Home");
+                        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                        // Send an email with this link
+                        // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                        // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        //await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                        // Uncomment to debug locally 
+                        // TempData["ViewBagLink"] = callbackUrl;
+
+                        ViewBag.Message = "Check your email and confirm your account, you must be confirmed "
+                             + "before you can log in.";
+
+                        return View("Info");
+                        //return RedirectToAction("Index", "Home");
+                    }
+                    AddErrors(result1);
                 }
                 AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
+            ViewBag.LibID = new SelectList(db.Libraries, "LibID", "Library_Name");
             return View(model);
         }
 
@@ -211,10 +270,10 @@ namespace VRLibrary.Controllers
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+                 await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form
@@ -367,7 +426,7 @@ namespace VRLibrary.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Surname = model.Surname };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -421,6 +480,17 @@ namespace VRLibrary.Controllers
             }
 
             base.Dispose(disposing);
+        }
+
+        private async Task<string> SendEmailConfirmationTokenAsync(string userID, string subject)
+        {
+            string code = await UserManager.GenerateEmailConfirmationTokenAsync(userID);
+            var callbackUrl = Url.Action("ConfirmEmail", "Account",
+               new { userId = userID, code = code }, protocol: Request.Url.Scheme);
+            await UserManager.SendEmailAsync(userID, subject,
+               "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+            return callbackUrl;
         }
 
         #region Helpers
@@ -479,6 +549,7 @@ namespace VRLibrary.Controllers
                 }
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
+            
         }
         #endregion
     }

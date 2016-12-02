@@ -28,6 +28,7 @@ namespace VRLibrary.Models
             this.Ratings = new HashSet<Rating>();
             this.Reservations = new HashSet<Reservation>();
             this.AspNetRoles = new HashSet<AspNetRole>();
+            this.Donations = new HashSet<Donation>();
         }
     
         public string Id { get; set; }
@@ -45,6 +46,7 @@ namespace VRLibrary.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public Nullable<int> LibID { get; set; }
+        public Nullable<long> StudentPass { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Application> Applications { get; set; }
@@ -69,5 +71,7 @@ namespace VRLibrary.Models
         public virtual ICollection<Reservation> Reservations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetRole> AspNetRoles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Donation> Donations { get; set; }
     }
 }
