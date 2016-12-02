@@ -35,8 +35,12 @@ namespace VRLibrary
                 //Here we create a Admin super user who will maintain the website                  
 
                 var user = new ApplicationUser();
-                user.UserName = "admin";
-                user.Email = "admin@vrlibrary.com";
+                //var user = await UserManager.FindByNameAsync("fertakis@gmail.com");
+                user.UserName = "fertakis@gmail.com";
+                user.Name = "Konstantinos";
+                user.Surname = "Fertakis";
+                user.Email = "fertakis@gmail.com";
+                user.LibID = 3;
                 user.EmailConfirmed = true;
 
                 string userPWD = "Accenture5!";
@@ -51,7 +55,7 @@ namespace VRLibrary
                 }
             }
 
-            // creating Creating Manager role    
+            // creating Creating Librarian role    
             if (!roleManager.RoleExists("Librarian"))
             {
                 var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
@@ -60,7 +64,7 @@ namespace VRLibrary
 
             }
 
-            // creating Creating Employee role    
+            // creating Creating Student role    
             if (!roleManager.RoleExists("Student"))
             {
                 var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
@@ -68,7 +72,7 @@ namespace VRLibrary
                 roleManager.Create(role);
 
             }
-            // creating Creating Employee role    
+            // creating Creating PendingUser role    
             if (!roleManager.RoleExists("PendingUser"))
             {
                 var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();

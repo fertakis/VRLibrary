@@ -18,6 +18,7 @@ namespace VRLibrary.Models
         }
         public string Name { get; set; }
         public string Surname { get; set; }
+        public int LibID { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

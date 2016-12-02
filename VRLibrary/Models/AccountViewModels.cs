@@ -16,6 +16,9 @@ namespace VRLibrary.Models
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
+        [Required]
+        [Display(Name = "LibId")]
+        public string LibID { get; set; }
     }
 
     public class ExternalLoginListViewModel
@@ -81,8 +84,13 @@ namespace VRLibrary.Models
         public string Surname { get; set; }
         [Required]
         [EmailAddress]
+        [Display(Name = "Library")]
+        public int LibID { get; set; }
+        [Required]
+        [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]

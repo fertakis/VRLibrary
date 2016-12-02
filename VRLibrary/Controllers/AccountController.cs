@@ -17,6 +17,7 @@ namespace VRLibrary.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        private VRLibEntities db = new VRLibEntities();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private IdentityRole _roleManager;
@@ -178,6 +179,7 @@ namespace VRLibrary.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            ViewBag.LibID = new SelectList(db.Libraries, "LibID", "Library_Name");
             return View();
         }
 
@@ -190,7 +192,7 @@ namespace VRLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Surname = model.Surname };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Surname = model.Surname, LibID=model.LibID };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 //await RoleManager;
                 if (result.Succeeded)
