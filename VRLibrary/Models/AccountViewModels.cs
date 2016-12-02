@@ -83,7 +83,6 @@ namespace VRLibrary.Models
         [Display(Name = "Surname")]
         public string Surname { get; set; }
         [Required]
-        [EmailAddress]
         [Display(Name = "Library")]
         public int LibID { get; set; }
         [Required]

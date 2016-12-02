@@ -197,7 +197,7 @@ namespace VRLibrary.Controllers
                 //await RoleManager;
                 if (result.Succeeded)
                 {
-                    var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>());
+                    ///var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>());
                     //roleManager
                     var result1 = await UserManager.AddToRoleAsync(user.Id, "PendingUser");
                     if (result1.Succeeded)
@@ -227,6 +227,7 @@ namespace VRLibrary.Controllers
             }
 
             // If we got this far, something failed, redisplay form
+            ViewBag.LibID = new SelectList(db.Libraries, "LibID", "Library_Name");
             return View(model);
         }
 
