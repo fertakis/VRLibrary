@@ -16,6 +16,8 @@ namespace VRLibrary.Controllers
         private VRLibEntities db = new VRLibEntities();
 
         // GET: Books
+        [Authorize]
+        [AllowAnonymous]
         public ActionResult Index(string bookSubject, string searchString)
         {
 
@@ -70,6 +72,7 @@ namespace VRLibrary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Create([Bind(Include = "BookID,Title,Author,Publisher,ISBN,LibID,Shelf,Subject,Rating,BookState,ImagePath,Description,NoOfRaters")] Book book)
         {
             if (ModelState.IsValid)
@@ -86,6 +89,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Books/Edit/5
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -107,6 +111,7 @@ namespace VRLibrary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Edit([Bind(Include = "BookID,Title,Author,Publisher,ISBN,LibID,Shelf,Subject,Rating,BookState,ImagePath,Description,AspNetUserId,NoOfRaters")] Book book)
         {
             if (ModelState.IsValid)
@@ -121,6 +126,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Books/Delete/5
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -136,6 +142,7 @@ namespace VRLibrary.Controllers
         }
 
         // POST: Books/Delete/5
+        [Authorize(Roles = "Admin,Librarian")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

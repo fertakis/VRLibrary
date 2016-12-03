@@ -22,6 +22,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Ratings/Details/5
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +38,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Ratings/Create
+        [Authorize(Roles = "Student")]
         public ActionResult Create()
         {
             ViewBag.AspNetUserId = new SelectList(db.AspNetUsers, "Id", "Email");
@@ -64,6 +66,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Ratings/Edit/5
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -85,6 +88,7 @@ namespace VRLibrary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Edit([Bind(Include = "RatingId,AspNetUserId,Rating1,BookId,DateOfRating")] Rating rating)
         {
             if (ModelState.IsValid)
@@ -99,6 +103,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Ratings/Delete/5
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -116,6 +121,7 @@ namespace VRLibrary.Controllers
         // POST: Ratings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult DeleteConfirmed(int id)
         {
             Rating rating = db.Ratings.Find(id);

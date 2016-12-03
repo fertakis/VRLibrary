@@ -15,6 +15,8 @@ namespace VRLibrary.Controllers
         private VRLibEntities db = new VRLibEntities();
 
         // GET: Reservations
+        [Authorize(Roles = "Admin,Librarian")]
+
         public ActionResult Index()
         {
             var reservations = db.Reservations.Include(r => r.AspNetUser).Include(r => r.Book);
@@ -22,6 +24,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Reservations/Details/5
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +40,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Reservations/Create
+        [Authorize(Roles = "Admin,Librarian,Student")]
         public ActionResult Create()
         {
             ViewBag.AspNetUserId = new SelectList(db.AspNetUsers, "Id", "Email");
@@ -49,6 +53,7 @@ namespace VRLibrary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Librarian,Student")]
         public ActionResult Create([Bind(Include = "ReservationsId,BookId,AspNetUserId,DateOfReservation")] Reservation reservation)
         {
             if (ModelState.IsValid)
@@ -63,8 +68,10 @@ namespace VRLibrary.Controllers
             return View(reservation);
         }
 
-        // GET: Reservations/Edit/5
+        // GET: Reservations/Edit/5 
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Edit(int? id)
+           
         {
             if (id == null)
             {
@@ -85,6 +92,7 @@ namespace VRLibrary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Edit([Bind(Include = "ReservationsId,BookId,AspNetUserId,DateOfReservation")] Reservation reservation)
         {
             if (ModelState.IsValid)
@@ -99,6 +107,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Reservations/Delete/5
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -116,6 +125,7 @@ namespace VRLibrary.Controllers
         // POST: Reservations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult DeleteConfirmed(int id)
         {
             Reservation reservation = db.Reservations.Find(id);
@@ -134,3 +144,6 @@ namespace VRLibrary.Controllers
         }
     }
 }
+
+
+//SSSSOOOOOSSSS 2 controllers gia na mporei o STUDENT na kanei edit, delete, MONO to diko tou reservation!!!

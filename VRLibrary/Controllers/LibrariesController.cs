@@ -37,7 +37,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Libraries/Create
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -46,9 +46,10 @@ namespace VRLibrary.Controllers
         // POST: Libraries/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create([Bind(Include = "LibID,Library_Name,Address,Tel,Email")] Library library)
         {
             if (ModelState.IsValid)
@@ -62,7 +63,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Libraries/Edit/5
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -82,6 +83,7 @@ namespace VRLibrary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "LibID,Library_Name,Address,Tel,Email")] Library library)
         {
             if (ModelState.IsValid)
@@ -94,7 +96,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Libraries/Delete/5
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -110,7 +112,7 @@ namespace VRLibrary.Controllers
         }
 
         // POST: Libraries/Delete/5
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
