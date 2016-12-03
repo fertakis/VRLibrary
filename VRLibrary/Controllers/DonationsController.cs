@@ -15,6 +15,8 @@ namespace VRLibrary.Controllers
         private VRLibEntities db = new VRLibEntities();
 
         // GET: Donations
+        [Authorize(Roles = "Admin,Librarian")]
+
         public ActionResult Index()
         {
             var donations = db.Donations.Include(d => d.AspNetUser);
@@ -22,6 +24,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Donations/Details/5
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +40,8 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Donations/Create
+        [Authorize]
+        [AllowAnonymous]
         public ActionResult Create()
         {
             ViewBag.AspNetUserId = new SelectList(db.AspNetUsers, "Id", "Email");
@@ -62,6 +67,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Donations/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -82,6 +88,7 @@ namespace VRLibrary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "DonationId,AspNetUserId,DateOfDonation,Amount")] Donation donation)
         {
             if (ModelState.IsValid)
@@ -95,6 +102,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Donations/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -112,6 +120,7 @@ namespace VRLibrary.Controllers
         // POST: Donations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirmed(int id)
         {
             Donation donation = db.Donations.Find(id);

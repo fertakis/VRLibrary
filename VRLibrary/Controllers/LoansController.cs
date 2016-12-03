@@ -15,6 +15,7 @@ namespace VRLibrary.Controllers
         private VRLibEntities db = new VRLibEntities();
 
         // GET: Loans
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Index()
         {
             var loans = db.Loans.Include(l => l.AspNetUser).Include(l => l.AspNetUser1).Include(l => l.Book).Include(l => l.Reservation);
@@ -22,6 +23,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Loans/Details/5
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +39,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Loans/Create
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Create()
         {
             ViewBag.AspNetUserId = new SelectList(db.AspNetUsers, "Id", "Email");
@@ -51,6 +54,7 @@ namespace VRLibrary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Create([Bind(Include = "LoanId,AspNetUserId,BookId,AspNetLibrarianId,DateLended,DateReturned,DateToBeReturned,Extended,ReservationId")] Loan loan)
         {
             if (ModelState.IsValid)
@@ -68,6 +72,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Loans/Edit/5
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -91,6 +96,7 @@ namespace VRLibrary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Edit([Bind(Include = "LoanId,AspNetUserId,BookId,AspNetLibrarianId,DateLended,DateReturned,DateToBeReturned,Extended,ReservationId")] Loan loan)
         {
             if (ModelState.IsValid)
@@ -107,6 +113,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Loans/Delete/5
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -124,6 +131,7 @@ namespace VRLibrary.Controllers
         // POST: Loans/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult DeleteConfirmed(int id)
         {
             Loan loan = db.Loans.Find(id);
@@ -142,3 +150,6 @@ namespace VRLibrary.Controllers
         }
     }
 }
+
+
+//!!!!!!!!!!!!!!sos controller gia na kanei o STUDENT EXTEND
