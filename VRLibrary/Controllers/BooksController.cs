@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using VRLibrary.Models;
+using Microsoft.AspNet.Identity;
 
 namespace VRLibrary.Controllers
 {
@@ -24,7 +25,7 @@ namespace VRLibrary.Controllers
                              orderby j.Subject
                              select j.Subject;
 
-            //SubjectList.AddRange(SubjectQry.Distinct());
+            SubjectList.AddRange(SubjectQry.Distinct());
 
             ViewBag.bookSubject = new SelectList(SubjectList);
 
@@ -36,7 +37,7 @@ namespace VRLibrary.Controllers
             {
                 books = books.Where(s => s.Title.Contains(searchString));
             }
-
+            //ViewBag.UserName = new SelectList(db.AspNetUsers, "Id", "Library_Name");
             return View(books.ToList());
         }
 
@@ -68,10 +69,11 @@ namespace VRLibrary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "BookID,Title,Author,Publisher,ISBN,LibID,Shelf,Subject,Rating,BookState,ImagePath,Description,AspNetUserId,NoOfRaters")] Book book)
+        public ActionResult Create([Bind(Include = "BookID,Title,Author,Publisher,ISBN,LibID,Shelf,Subject,Rating,BookState,ImagePath,Description,NoOfRaters")] Book book)
         {
             if (ModelState.IsValid)
             {
+                book.AspNetUserId = User.Identity.GetUserId();
                 db.Books.Add(book);
                 db.SaveChanges();
                 return RedirectToAction("Index");

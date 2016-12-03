@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<VRLibrary.Models.Book>
 
+
 @{
     ViewBag.Title = "Index";
 }
@@ -12,10 +13,10 @@
     @using (Html.BeginForm("Index", "Books", FormMethod.Get))
     {
     <p>
-        Subject: <select id="bookSubject" name="bookSubject">
-            <option value="">All</option>
-        </select>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>
-        Θέμα: <input id="SearchString" name="SearchString" type="text" value="bi5"> <br>
+        Θέμα:
+        @Html.DropDownList("bookSubject","Θέμα...") 
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>
+        Τίτλος: <input id="SearchString" name="SearchString" type="text" value="Search..."> <br>
         <input type="submit" value="Αναζήτηση">
     </p>
     }
@@ -95,7 +96,7 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AspNetUserId)
+                    @Html.DisplayFor(modelItem => item.AspNetUser.UserName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.NoOfRaters)
