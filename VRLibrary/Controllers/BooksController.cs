@@ -57,6 +57,7 @@ namespace VRLibrary.Controllers
         }
 
         // GET: Books/Create
+        [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Create()
         {
             ViewBag.BookState = new SelectList(db.BookStates, "BookStateId", "State");
