@@ -18,8 +18,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
+    <IISExpressSSLPort>44318</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -273,10 +272,14 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\dropDownSignIn.css" />
+    <Content Include="Content\modal.css" />
+    <Content Include="Content\Queries.css" />
+    <Content Include="Content\SiteStyling.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
+    <Content Include="Content\OldSite.css" />
     <Content Include="Models\VRLibraryDataAccess.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>VRLibraryDataAccess.edmx</DependentUpon>
@@ -321,10 +324,10 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_OldLayout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\OldIndex.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
@@ -381,6 +384,9 @@
     <Content Include="Views\Donations\Edit.cshtml" />
     <Content Include="Views\Donations\Index.cshtml" />
     <Content Include="Views\Shared\Info.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_NewLoginPartial.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
