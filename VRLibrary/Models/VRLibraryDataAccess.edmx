@@ -95,9 +95,9 @@
             <PropertyRef Name="BookID" />
           </Key>
           <Property Name="BookID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Author" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Publisher" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Author" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Publisher" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="ISBN" Type="char" MaxLength="13" Nullable="false" />
           <Property Name="LibID" Type="int" Nullable="false" />
           <Property Name="Shelf" Type="varchar" MaxLength="20" />
@@ -106,7 +106,7 @@
           <Property Name="BookState" Type="int" Nullable="false" />
           <Property Name="ImagePath" Type="text" />
           <Property Name="Description" Type="text" />
-          <Property Name="AspNetUserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="AspNetUserId" Type="nchar" MaxLength="128" />
           <Property Name="NoOfRaters" Type="int" />
         </EntityType>
         <EntityType Name="BookState">
@@ -225,18 +225,6 @@
             </Principal>
             <Dependent Role="AspNetUsers">
               <PropertyRef Name="LibID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Books_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="Books" Type="Self.Books" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Books">
-              <PropertyRef Name="AspNetUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -497,10 +485,6 @@
             <End Role="Libraries" EntitySet="Libraries" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
-          <AssociationSet Name="FK_Books_AspNetUsers" Association="Self.FK_Books_AspNetUsers">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Books" EntitySet="Books" />
-          </AssociationSet>
           <AssociationSet Name="FK_Books_BookState" Association="Self.FK_Books_BookState">
             <End Role="BookState" EntitySet="BookState" />
             <End Role="Books" EntitySet="Books" />
@@ -664,16 +648,15 @@
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
           <Property Name="StudentPass" Type="Int64" />
           <NavigationProperty Name="Donations" Relationship="VRLibModel.FK_Donations_AspNetUsers" FromRole="AspNetUser" ToRole="Donation" />
-          <NavigationProperty Name="Books" Relationship="VRLibModel.FK_Books_AspNetUsers" FromRole="AspNetUser" ToRole="Book" />
         </EntityType>
         <EntityType Name="Book">
           <Key>
             <PropertyRef Name="BookID" />
           </Key>
           <Property Name="BookID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Publisher" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Publisher" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ISBN" Type="String" Nullable="false" MaxLength="13" Unicode="false" FixedLength="true" />
           <Property Name="LibID" Type="Int32" Nullable="false" />
           <Property Name="Shelf" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
@@ -682,14 +665,13 @@
           <Property Name="BookState" Type="Int32" Nullable="false" />
           <Property Name="ImagePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="true" Unicode="true" />
           <Property Name="NoOfRaters" Type="Int32" />
           <NavigationProperty Name="BookState1" Relationship="Self.FK_Books_BookState" FromRole="Books" ToRole="BookState" />
           <NavigationProperty Name="Library" Relationship="Self.FK_Books_Libraries" FromRole="Books" ToRole="Libraries" />
           <NavigationProperty Name="Loans" Relationship="Self.FK_Loans_Books" FromRole="Books" ToRole="Loans" />
           <NavigationProperty Name="Ratings" Relationship="Self.FK_Rating_Books" FromRole="Books" ToRole="Rating" />
           <NavigationProperty Name="Reservations" Relationship="Self.FK_Reservations_Books" FromRole="Books" ToRole="Reservations" />
-          <NavigationProperty Name="AspNetUser" Relationship="VRLibModel.FK_Books_AspNetUsers" FromRole="Book" ToRole="AspNetUser" />
         </EntityType>
         <EntityType Name="BookState">
           <Key>
@@ -1115,10 +1097,6 @@
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="Donation" EntitySet="Donations" />
           </AssociationSet>
-          <AssociationSet Name="FK_Books_AspNetUsers" Association="VRLibModel.FK_Books_AspNetUsers">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Book" EntitySet="Books" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Donation">
           <Key>
@@ -1138,18 +1116,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Donation">
-              <PropertyRef Name="AspNetUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Books_AspNetUsers">
-          <End Type="VRLibModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="VRLibModel.Book" Role="Book" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Book">
               <PropertyRef Name="AspNetUserId" />
             </Dependent>
           </ReferentialConstraint>
