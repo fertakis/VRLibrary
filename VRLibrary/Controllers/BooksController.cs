@@ -51,7 +51,7 @@ namespace VRLibrary.Controllers
             return View(books.ToList());
         }
 
-        // GET: Books
+        // GET: Books/SearchBook
         [Authorize]
         [AllowAnonymous]
         public ActionResult SearchBook(string bookSubject, string searchString)
