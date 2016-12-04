@@ -39,7 +39,7 @@ namespace VRLibrary.Controllers
             string role = null;
             if (User.Identity.IsAuthenticated)
             {
-                var user = UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId().ToString());
                 var UserRole = await UserManager.GetRolesAsync(User.Identity.GetUserId().ToString());
                 if (UserRole.Count > 0)
                 {

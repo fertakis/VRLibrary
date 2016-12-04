@@ -16,6 +16,8 @@ namespace VRLibrary.Controllers
     [Authorize(Roles = "Admin,Librarian")]
     public class AspNetUsersController : Controller
     {
+        private ApplicationDbContext context = new ApplicationDbContext();
+
         private VRLibEntities db = new VRLibEntities();
 
         // GET: AspNetUsers
@@ -66,17 +68,34 @@ namespace VRLibrary.Controllers
         }
 
         // GET: AspNetUsers/Edit/5
-        public ActionResult Edit(string id)
+        public async Task<ActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             AspNetUser aspNetUser = db.AspNetUsers.Find(id);
+            var UserManager = new UserManager<ApplicationUser>(
+           new UserStore<ApplicationUser>(context));
+            string role = null;
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId().ToString());
+                var UserRole = await UserManager.GetRolesAsync(User.Identity.GetUserId().ToString());
+                if (UserRole.Count > 0)
+                {
+                    role = UserRole.First();
+                }
+                else
+                {
+                    role = null;
+                }
+            }
             if (aspNetUser == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.Role = role;
             ViewBag.UserRoles = new SelectList(db.AspNetRoles.ToList(), "Name", "Name",
                 aspNetUser.AspNetRoles.Any() ? aspNetUser.AspNetRoles.First().Name : string.Empty);
             ViewBag.LibID = new SelectList(db.Libraries, "LibID", "Library_Name", aspNetUser.LibID);
