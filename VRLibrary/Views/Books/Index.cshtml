@@ -1,119 +1,107 @@
 ﻿@model IEnumerable<VRLibrary.Models.Book>
 
-
-@{
-    ViewBag.Title = "Index";
-}
-
-<h2>Index</h2>
-
 <p>
-    @Html.ActionLink("Create New", "Create")
-
     @using (Html.BeginForm("Index", "Books", FormMethod.Get))
     {
-    <p>
-        Θέμα:
+    <p class="searchBar searchBarsearch col-md-offset-4" >
         @Html.DropDownList("bookSubject","Θέμα...") 
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>
-        Τίτλος: <input id="SearchString" name="SearchString" type="text" value="Search..."> <br>
+        <input id="SearchString" name="SearchString" type="text" placeholder="Search..."> 
         <input type="submit" value="Αναζήτηση">
     </p>
     }
 </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Publisher)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ISBN)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Shelf)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Subject)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImagePath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AspNetUserId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NoOfRaters)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BookState1.State)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Library.Library_Name)
-            </th>
-            <th></th>
-        </tr>
+<div id="fb-root"></div>
+<script>
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=1169360486485672";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Author)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Publisher)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ISBN)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Shelf)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Subject)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Rating)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ImagePath)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AspNetUser.UserName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NoOfRaters)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BookState1.State)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Library.Library_Name)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.BookID }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.BookID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.BookID })
-                </td>
-            </tr>
-        }
+<div class="searchResults">
+@{
+    int i=1;
+    foreach (var item in Model)
+    {
+        <div class="responsiveBookImg">
+            <div class="searchImageDiv">
+                <img id="myImg+@i" class="SearchImage" onclick="modalFunction('myImg',@i)" src=@Html.DisplayFor(modelItem => item.ImagePath) width="300" height="200">
+                <div id="myImgTitle+@i" class="searchImageTitle"> @Html.DisplayFor(modelItem => item.Title)</div>
+                <div id="myImgAuthor+@i" class="onlyModal">@Html.DisplayFor(modelItem => item.Author)</div>
+                <div id="myImgPublisher+@i" class="onlyModal">@Html.DisplayFor(modelItem => item.Publisher)</div>
+                <div id="myImgISBN+@i" class="onlyModal">@Html.DisplayFor(modelItem => item.ISBN)</div>
+                <div id="myImgLibrary+@i" class="onlyModal">@Html.DisplayFor(modelItem => item.Library.Library_Name)</div>
+                <div id="myImgShelf+@i" class="onlyModal">@Html.DisplayFor(modelItem => item.Shelf)</div>
+                <div id="myImgDescription+@i" class="onlyModal">@Html.DisplayFor(modelItem => item.Description)</div>
+                <div id="myImgRating+@i" class="onlyModal">&#9733; @Html.DisplayFor(modelItem => item.Rating)</div>
+                <div id="myImgAvailiable+@i" class="onlyModal">Availiable: 3</div>
+                <div id="myImgReserved+@i" class="onlyModal">Reserved: 1</div>
+                <div id="myImgLoaned+@i" class="onlyModal">Loaned: 2</div>
+            </div>
+        </div>
+        i++;
+    }
+}
+</div>
+<!-- The Modal -->
+<div id="myModal" class="modal">
+    <span class="close">×</span>
+    <div class="modal-content">
+        <div id="bookinfo">
 
-    </table>
-</p>
+            <div class="col-sm-3">
+                <img id="modalImage">
+                <p>Rating: <strong id="modalRating"></strong>/5</p>
+                <p id=modalAvailiable></p>
+                <p id=modalReserved></p>
+                <p id=modalLoaned></p>
+            </div>
+
+            <div><div class="col-xs-2"><p>Title:</p></div><div class="col-xs-7"><p id="modalTitle"></p></div></div>
+            <div><div class="col-xs-2"><p>Author:</p></div><div class="col-xs-7"><p id="modalAuthor"></p></div></div>
+            <div><div class="col-xs-2"><p>Publisher:</p></div><div class="col-xs-7"><p id="modalPublisher"></p></div></div>
+            <div><div class="col-xs-2"><p>ISBN:</p></div><div class="col-xs-7"><p id="modalISBN"></p></div></div>
+            <div><div class="col-xs-2"><p>Library:</p></div><div class="col-xs-7"><p id="modalLibrary"></p></div></div>
+            <div><div class="col-xs-2"><p>Shelf:</p></div><div class="col-xs-7"><p id="modalShelf"></p></div></div>
+            <div><div class="col-xs-2"><p>Description:</p></div><div class="col-xs-7"><p id="modalDescription"></p></div></div>
+
+        </div>
+
+        <div class="modalDivButtons">
+            <div class="col-xs-3">
+                <button class="modalButton" type="button" name="Reserve a copy">Reserve a copy</button>
+            </div>
+            <div class="col-xs-3">
+                <button class="modalButton" type="button" name="button">Extend loan</button>
+            </div>
+            <div class="col-xs-3">
+                <div class="dropdownRating">
+                    <button class="modalButton" type="button" name="button">Rate this Book &#9733;</button>
+                    <div class="rating-dropdown-content ">
+                        <div class="rating">
+                            <span> &#9734;</span><span> &#9734;</span><span> &#9734;</span><span> &#9734;</span><span> &#9734;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fb-share-button" data-href="" data-layout="button" data-size="small" data-mobile-iframe="true">
+                <a id="modalfacebookShare" class="fb-xfbml-parse-ignore" target="_blank" href="">
+                    <div class="col-xs-3">
+                        <button class="modalButton" type="button" name="button" style="background-color:#3b5998;color:white;">
+                            Share on Facebook
+                        </button>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+    

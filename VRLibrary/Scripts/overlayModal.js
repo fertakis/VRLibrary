@@ -14,19 +14,19 @@ var modalLoaned = document.getElementById("modalLoaned");
 var modalfacebookShare = document.getElementById("modalfacebookShare");
 var span = document.getElementsByClassName("close")[0];
 
-function modalFunction(id) {
-    var img = document.getElementById(id);
-    var title = document.getElementById(id + "Title")
-    var author = document.getElementById(id + "Author")
-    var Publisher = document.getElementById(id + "Publisher")
-    var ISBNnum = document.getElementById(id + "ISBN")
-    var Library = document.getElementById(id + "Library")
-    var Shelf = document.getElementById(id + "Shelf")
-    var Description = document.getElementById(id + "Description")
-    var Rating = document.getElementById(id + "Rating")
-    var Availiable = document.getElementById(id + "Availiable")
-    var Reserved = document.getElementById(id + "Reserved")
-    var Loaned = document.getElementById(id + "Loaned")
+function modalFunction(id,num) {
+    var img = document.getElementById(id+"+"+num);
+    var title = document.getElementById(id + "Title+" + num)
+    var author = document.getElementById(id + "Author+" + num)
+    var Publisher = document.getElementById(id + "Publisher+" + num)
+    var ISBNnum = document.getElementById(id + "ISBN+" + num)
+    var Library = document.getElementById(id + "Library+" + num)
+    var Shelf = document.getElementById(id + "Shelf+" + num)
+    var Description = document.getElementById(id + "Description+" + num)
+    var Rating = document.getElementById(id + "Rating+" + num)
+    var Availiable = document.getElementById(id + "Availiable+" + num)
+    var Reserved = document.getElementById(id + "Reserved+" + num)
+    var Loaned = document.getElementById(id + "Loaned+" + num)
     modal.style.display = "block";
     modalImg.src = img.src;
     modalTitle.innerHTML = title.innerHTML;

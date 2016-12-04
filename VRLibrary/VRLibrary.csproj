@@ -404,7 +404,6 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Role\Index.cshtml" />
     <Content Include="Views\Loans\ExpiredLoans.cshtml" />
-    <Content Include="Views\AspNetUsers\temp.cshtml" />
     <Content Include="Views\Books\SearchBook.cshtml" />
   </ItemGroup>
   <ItemGroup>

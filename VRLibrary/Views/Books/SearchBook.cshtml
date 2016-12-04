@@ -1,16 +1,13 @@
 ﻿@model IEnumerable<VRLibrary.Models.Book>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
-
     @using (Html.BeginForm("Index", "Books", FormMethod.Get))
     {
-    <p>
-        Θέμα:
-        @Html.DropDownList("bookSubject", "Θέμα...")
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>
-        Τίτλος: <input id="SearchString" name="SearchString" type="text" placeholder="Search..."> <br>
+    <p class="searchBar searchBarsearch col-md-offset-4" style="font-size:15px;">
+        @Html.DropDownList("bookSubject", "Θέμα..." )
+       
+        <input id="SearchString" name="SearchString" type="text" placeholder="Search...">
         <input type="submit" value="Αναζήτηση">
     </p>
     }
-</p>
+    </p>
