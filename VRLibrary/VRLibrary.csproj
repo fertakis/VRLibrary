@@ -282,6 +282,10 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\dropDownSignIn.css" />
+    <Content Include="Content\modal.css" />
+    <Content Include="Content\Queries.css" />
+    <Content Include="Content\SiteStyling.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

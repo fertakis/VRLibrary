@@ -9,6 +9,7 @@
 
 </head>
 <body>
+    <!--
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -21,25 +22,34 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    
                     <li>@Html.ActionLink("Reserve", "Index", "Reservations")</li>
                     <li>@Html.ActionLink("LendedBooks", "Index", "Loans")</li>
                     <li>@Html.ActionLink("Apply", "Index", "Applications")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                       
+                    <li>@Html.ActionLink("Search","Index","Books")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
     <div class="container body-content">
-        @RenderBody()
+       
         <hr />
-        <footer>
+        <footer style="position:fixed; bottom:0px; color:white;">
             <p>&copy; @DateTime.Now.Year - Knowledge for all!!</p>
         </footer>
     </div>
+         -->
+        @Html.ActionLink("VRLIB", "Index", "Home", null, new { @class = "homebutton" })
 
+        @Html.ActionLink("Search Books", "Index", "Books", null, new { @class = "searchButton" })
+    @Html.Partial("_LoginPartial")
+    <div class="homediv">
+        @RenderBody()
+    </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
