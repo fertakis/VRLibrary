@@ -80,7 +80,7 @@ namespace VRLibrary.Controllers
             ViewBag.UserRoles = new SelectList(db.AspNetRoles.ToList(), "Name", "Name",
                 aspNetUser.AspNetRoles.Any() ? aspNetUser.AspNetRoles.First().Name : string.Empty);
             ViewBag.LibID = new SelectList(db.Libraries, "LibID", "Library_Name", aspNetUser.LibID);
-
+             
             return View(aspNetUser);
         }
 
