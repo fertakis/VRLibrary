@@ -69,17 +69,7 @@
 
     </div>
 
-        <div class="" data-href="" data-layout="button" data-size="small" data-mobile-iframe="true">
-            <a id="modalfacebookShare" class="fb-xfbml-parse-ignore" target="_blank" href="">
-                <div class="col-xs-3">
-                    <button class="modalButton" type="button" name="button" style="background-color:#3b5998;color:white;">
-                        Share on Facebook
-                    </button>
-                </div>
-            </a>
-        </div>
-    @ViewBag.UserRole
-    @if (ViewBag.UserRole == "PendingUser")
+    @if (ViewBag.UserRole == "PendingUser"|| ViewBag.UserRole ==null)
     {
         <div class="" data-href="" data-layout="button" data-size="small" data-mobile-iframe="true">
             <a id="modalfacebookShare" class="fb-xfbml-parse-ignore" target="_blank" href="">
