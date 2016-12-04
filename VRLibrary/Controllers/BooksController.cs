@@ -37,9 +37,11 @@ namespace VRLibrary.Controllers
             var UserManager = new UserManager<ApplicationUser>(
             new UserStore<ApplicationUser>(context));
             string role = null;
+            string id = null;
             if (User.Identity.IsAuthenticated)
             {
                 var user = await UserManager.FindByIdAsync(User.Identity.GetUserId().ToString());
+                id = user.Id;
                 var UserRole = await UserManager.GetRolesAsync(User.Identity.GetUserId().ToString());
                 if (UserRole.Count > 0)
                 {
@@ -60,6 +62,7 @@ namespace VRLibrary.Controllers
                 books = books.Where(s => s.Title.Contains(searchString));
             }
             //ViewBag.UserName = new SelectList(db.AspNetUsers, "Id", "Library_Name");
+            ViewBag.UserId = id;
             ViewBag.UserRole = role;
             return View(books.ToList());
         }

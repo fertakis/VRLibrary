@@ -67,6 +67,7 @@ namespace VRLibrary.Controllers
             if (ModelState.IsValid)
             {
                 db.Reservations.Add(reservation);
+                
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

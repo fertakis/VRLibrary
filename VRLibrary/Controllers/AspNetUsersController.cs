@@ -13,7 +13,7 @@ using VRLibrary.Models;
 
 namespace VRLibrary.Controllers
 {
-    [Authorize(Roles = "Admin,Librarian")]
+    [Authorize(Roles = "Admin,Librarian,Student")]
     public class AspNetUsersController : Controller
     {
         private ApplicationDbContext context = new ApplicationDbContext();
