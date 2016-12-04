@@ -18,7 +18,7 @@ namespace VRLibrary.Models
         public string Email { get; set; }
         [Required]
         [Display(Name = "LibId")]
-        public string LibID { get; set; }
+        public int LibID { get; set; }
     }
 
     public class ExternalLoginListViewModel

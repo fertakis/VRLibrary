@@ -426,7 +426,7 @@ namespace VRLibrary.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Surname = model.Surname };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Surname = model.Surname, LibID = model.LibID };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
