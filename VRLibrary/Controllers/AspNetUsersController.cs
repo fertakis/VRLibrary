@@ -13,6 +13,7 @@ using VRLibrary.Models;
 
 namespace VRLibrary.Controllers
 {
+    [Authorize(Roles = "Admin,Librarian")]
     public class AspNetUsersController : Controller
     {
         private VRLibEntities db = new VRLibEntities();

@@ -36,15 +36,19 @@ namespace VRLibrary.Controllers
             ViewBag.bookSubject = new SelectList(SubjectList);
             var UserManager = new UserManager<ApplicationUser>(
             new UserStore<ApplicationUser>(context));
-            var UserRole =await UserManager.GetRolesAsync(User.Identity.GetUserId().ToString());
-            string role;
-            if (UserRole.Count > 0)
+            var user = UserManager.FindByIdAsync(User.Identity.GetUserId());
+            string role = null;
+            if (user != null)
             {
-                role = UserRole.First();
-            }
-            else
-            {
-                role = null;
+                var UserRole = await UserManager.GetRolesAsync(User.Identity.GetUserId().ToString());
+                if (UserRole.Count > 0)
+                {
+                    role = UserRole.First();
+                }
+                else
+                {
+                    role = null;
+                }
             }
             var books = db.Books.Include(b => b.BookState1).Include(b => b.Library);
             //books = books.Where(s => s.BookID < 15);
