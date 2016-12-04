@@ -36,10 +36,10 @@ namespace VRLibrary.Controllers
             ViewBag.bookSubject = new SelectList(SubjectList);
             var UserManager = new UserManager<ApplicationUser>(
             new UserStore<ApplicationUser>(context));
-            var user = UserManager.FindByIdAsync(User.Identity.GetUserId());
             string role = null;
-            if (user != null)
+            if (User.Identity.IsAuthenticated)
             {
+                var user = UserManager.FindByIdAsync(User.Identity.GetUserId());
                 var UserRole = await UserManager.GetRolesAsync(User.Identity.GetUserId().ToString());
                 if (UserRole.Count > 0)
                 {
