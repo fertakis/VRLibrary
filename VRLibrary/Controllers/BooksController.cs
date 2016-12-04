@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using VRLibrary.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Threading.Tasks;
 
 namespace VRLibrary.Controllers
 {
@@ -21,7 +22,7 @@ namespace VRLibrary.Controllers
         // GET: Books
         [Authorize]
         [AllowAnonymous]
-        public ActionResult Index(string bookSubject, string searchString)
+        public async Task<ActionResult> Index(string bookSubject, string searchString)
         {
 
             var SubjectList = new List<string>();
@@ -35,8 +36,8 @@ namespace VRLibrary.Controllers
             ViewBag.bookSubject = new SelectList(SubjectList);
             var UserManager = new UserManager<ApplicationUser>(
             new UserStore<ApplicationUser>(context));
-            string UserRole = UserManager.GetRolesAsync(User.Identity.GetUserId().ToString()).ToString();
-
+            var UserRole =await UserManager.GetRolesAsync(User.Identity.GetUserId().ToString());
+            var role = UserRole.First();
             var books = db.Books.Include(b => b.BookState1).Include(b => b.Library);
             //books = books.Where(s => s.BookID < 15);
             
@@ -47,7 +48,7 @@ namespace VRLibrary.Controllers
                 books = books.Where(s => s.Title.Contains(searchString));
             }
             //ViewBag.UserName = new SelectList(db.AspNetUsers, "Id", "Library_Name");
-            ViewBag.UserRole = UserRole;
+            ViewBag.UserRole = role;
             return View(books.ToList());
         }
 
