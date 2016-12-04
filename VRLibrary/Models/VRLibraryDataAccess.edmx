@@ -141,7 +141,7 @@
           <Key>
             <PropertyRef Name="LoanId" />
           </Key>
-          <Property Name="LoanId" Type="int" Nullable="false" />
+          <Property Name="LoanId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AspNetUserId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="BookId" Type="int" Nullable="false" />
           <Property Name="AspNetLibrarianId" Type="nvarchar" MaxLength="128" Nullable="false" />
