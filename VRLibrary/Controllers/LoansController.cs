@@ -65,6 +65,7 @@ namespace VRLibrary.Controllers
             }
 
             ViewBag.AspNetUserId = new SelectList(db.AspNetUsers, "Id", "Email", loan.AspNetUserId);
+
             ViewBag.AspNetLibrarianId = new SelectList(db.AspNetUsers, "Id", "Email", loan.AspNetLibrarianId);
             ViewBag.BookId = new SelectList(db.Books, "BookID", "Title", loan.BookId);
             ViewBag.ReservationId = new SelectList(db.Reservations, "ReservationsId", "AspNetUserId", loan.ReservationId);

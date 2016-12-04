@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -43,9 +45,15 @@ namespace VRLibrary.Controllers
         [Authorize(Roles = "Admin,Librarian,Student")]
         public ActionResult Create()
         {
-            ViewBag.AspNetUserId = new SelectList(db.AspNetUsers, "Id", "Email");
+            Reservation model = new Reservation();
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+            var name = currentUser.UserName.ToString();
+            model.AspNetUserId = User.Identity.GetUserId();
+            model.DateOfReservation = DateTime.Now;
+            ViewBag.UserName = name;
             ViewBag.BookId = new SelectList(db.Books, "BookID", "Title");
-            return View();
+            return View(model);
         }
 
         // POST: Reservations/Create
@@ -141,6 +149,10 @@ namespace VRLibrary.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        public static String GetTimestamp(DateTime value)
+        {
+            return value.ToString("yyyyMMddHHmmssffff");
         }
     }
 }
