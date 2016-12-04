@@ -17,6 +17,13 @@
             }
             ]
         </dd>
+        <dt>Personal details:</dt>
+        <dd>
+        [
+        @Html.ActionLink("Edit", "Edit", "AspNetUsers", new { id = ViewBag.id },null)
+        ]
+        </dd>
+
         <dt>External Logins:</dt>
         <dd>
             @Model.Logins.Count [

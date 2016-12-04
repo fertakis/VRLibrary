@@ -1,50 +1,33 @@
 ﻿@model VRLibrary.Models.Library
+<div class="responsiveFullPageDiv">
+    <div>
+        <h4>@Html.DisplayFor(model => model.Library_Name)</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
 
-@{
-    ViewBag.Title = "Details";
-}
+            <dd>
+                @Html.DisplayFor(model => model.Address)
+            </dd>
 
-<h2>Details</h2>
+            <dt>
+                @Html.DisplayNameFor(model => model.Tel)
+            </dt>
 
-<div>
-    <h4>Library</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Library_Name)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Tel)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Library_Name)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Tel)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Tel)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-
-    </dl>
+        </dl>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.LibID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

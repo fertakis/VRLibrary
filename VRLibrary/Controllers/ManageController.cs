@@ -64,6 +64,7 @@ namespace VRLibrary.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
+            ViewBag.id = userId;
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),

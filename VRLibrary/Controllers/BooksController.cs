@@ -43,6 +43,27 @@ namespace VRLibrary.Controllers
             return View(books.ToList());
         }
 
+        // GET: Books
+        [Authorize]
+        [AllowAnonymous]
+        public ActionResult SearchBook(string bookSubject, string searchString)
+        {
+
+            var SubjectList = new List<string>();
+
+            var SubjectQry = from j in db.Books
+                             orderby j.Subject
+                             select j.Subject;
+
+            SubjectList.AddRange(SubjectQry.Distinct());
+
+            ViewBag.bookSubject = new SelectList(SubjectList);
+
+
+            //ViewBag.UserName = new SelectList(db.AspNetUsers, "Id", "Library_Name");
+            return View();
+        }
+
         // GET: Books/Details/5
         public ActionResult Details(int? id)
         {

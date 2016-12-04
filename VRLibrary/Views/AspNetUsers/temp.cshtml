@@ -131,16 +131,16 @@
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.LibID, "LibID", htmlAttributes: new { @class = "control-label col-md-3" })
-                <div class="col-md-9">
+                @Html.LabelFor(model => model.LibID, "LibID", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
                     @Html.DropDownList("LibID", null, htmlAttributes: new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.LibID, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group" style="display:none;">
-                @Html.LabelFor(model => model.StudentPass, htmlAttributes: new { @class = "control-label col-md-3" })
-                <div class="col-md-9">
+                @Html.LabelFor(model => model.StudentPass, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
                     @Html.EditorFor(model => model.StudentPass, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.StudentPass, "", new { @class = "text-danger" })
                 </div>
@@ -153,7 +153,11 @@
             </div>
         </div>
     }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
 </div>
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

@@ -140,6 +140,13 @@ namespace VRLibrary.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Admin,Librarian")]
+        public ActionResult ExpiredLoans()
+        {// if exiration date > current date
+            var loans = db.Loans.Include(l => l.AspNetUser).Include(l => l.AspNetUser1).Include(l => l.Book).Include(l => l.Reservation);
+            return View(loans.ToList());
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

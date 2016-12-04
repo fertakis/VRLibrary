@@ -1,57 +1,37 @@
 ﻿@model IEnumerable<VRLibrary.Models.Application>
 
-@{
-    ViewBag.Title = "Index";
-}
+<div class="responsiveFullPageDiv">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AspNetUser1.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AspNetUser1.Surname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AspNetUser1.Email)
+            </th>
+            <th></th>
+        </tr>
 
-<h2>Index</h2>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AspNetUser.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AspNetUser.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AspNetUser.Email)
+                </td>
+                <td>
+                    @Html.ActionLink("Accept", "Delete", new { id = item.ApplicationId })
+                </td>
+            </tr>
+        }
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.DateOfApplication)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateOfVerification)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AspNetUser.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AspNetUser1.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Library.Library_Name)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateOfApplication)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateOfVerification)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AspNetUser.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AspNetUser1.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Library.Library_Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ApplicationId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ApplicationId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ApplicationId })
-        </td>
-    </tr>
-}
-
-</table>
+    </table>
+</div>

@@ -1,19 +1,16 @@
-﻿@model IEnumerable<VRLibrary.Models.Reservation>
+﻿@model IEnumerable<VRLibrary.Models.Loan>
 
 <div class="responsiveFullPageDiv">
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.AspNetUser.Name)
+                @Html.DisplayNameFor(model => model.AspNetUser1.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AspNetUser.Surname)
+                @Html.DisplayNameFor(model => model.AspNetUser1.Surname)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AspNetUser.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Book.Title)
+                @Html.DisplayNameFor(model => model.AspNetUser1.Email)
             </th>
             <th></th>
         </tr>
@@ -31,10 +28,7 @@
                     @Html.DisplayFor(modelItem => item.AspNetUser.Email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Book.Title)
-                </td>
-                <td>
-                    @Html.ActionLink("Check out book", "Delete", new { id = item.ReservationsId })
+                    @Html.ActionLink("Returned", "Delete", new { id = item.LoanId })
                 </td>
             </tr>
         }
