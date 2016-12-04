@@ -76,6 +76,12 @@ namespace VRLibrary.Controllers
             return View(reservation);
         }
 
+        //  GET:
+        [Authorize(Roles = "Admin,Librarian")]
+        public ActionResult checkout()
+        {
+            return HttpNotFound();
+        }
         // GET: Reservations/Edit/5 
         [Authorize(Roles = "Admin,Librarian")]
         public ActionResult Edit(int? id)
