@@ -45,7 +45,7 @@
          -->
         @Html.ActionLink("VRLIB", "Index", "Home", null, new { @class = "homebutton" })
 
-        @Html.ActionLink("Search Books", "Index", "Books", null, new { @class = "searchButton" })
+        @Html.ActionLink("Search Books", "SearchBook", "Books", null, new { @class = "searchButton" })
     @Html.Partial("_LoginPartial")
     <div class="homediv">
         @RenderBody()
