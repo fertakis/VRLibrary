@@ -119,10 +119,10 @@
             <button class="modalButton" type="button" name="button">Edit book</button>
         </div>
         <div class="col-xs-3">
-            <button class="modalButton" type="button" name="button">Check in</button>
+            <button class="modalButton" type="button" name="button">@Html.ActionLink("Check in", "ExpiredLoans", "Loans")</button>
         </div>
         <div class="col-xs-3">
-            <button class="modalButton" type="button" name="button">Check out</button>
+            <button class="modalButton" type="button" name="button">@Html.ActionLink("Check out", "Create", "Loans")</button>
         </div>
     }
 
