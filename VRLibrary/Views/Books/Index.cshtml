@@ -49,26 +49,39 @@
 <div id="myModal" class="modal">
     <span class="close">×</span>
     <div class="modal-content">
-        <div id="bookinfo">
+    <div id="bookinfo">
 
-            <div class="col-sm-3">
-                <img id="modalImage">
-                <p>Rating: <strong id="modalRating"></strong>/5</p>
-                <p id=modalAvailiable></p>
-                <p id=modalReserved></p>
-                <p id=modalLoaned></p>
-            </div>
-
-            <div><div class="col-xs-2"><p>Title:</p></div><div class="col-xs-7"><p id="modalTitle"></p></div></div>
-            <div><div class="col-xs-2"><p>Author:</p></div><div class="col-xs-7"><p id="modalAuthor"></p></div></div>
-            <div><div class="col-xs-2"><p>Publisher:</p></div><div class="col-xs-7"><p id="modalPublisher"></p></div></div>
-            <div><div class="col-xs-2"><p>ISBN:</p></div><div class="col-xs-7"><p id="modalISBN"></p></div></div>
-            <div><div class="col-xs-2"><p>Library:</p></div><div class="col-xs-7"><p id="modalLibrary"></p></div></div>
-            <div><div class="col-xs-2"><p>Shelf:</p></div><div class="col-xs-7"><p id="modalShelf"></p></div></div>
-            <div><div class="col-xs-2"><p>Description:</p></div><div class="col-xs-7"><p id="modalDescription"></p></div></div>
-
+        <div class="col-sm-3">
+            <img id="modalImage">
+            <p>Rating: <strong id="modalRating"></strong>/5</p>
+            <p id=modalAvailiable></p>
+            <p id=modalReserved></p>
+            <p id=modalLoaned></p>
         </div>
 
+        <div><div class="col-xs-2"><p>Title:</p></div><div class="col-xs-7"><p id="modalTitle"></p></div></div>
+        <div><div class="col-xs-2"><p>Author:</p></div><div class="col-xs-7"><p id="modalAuthor"></p></div></div>
+        <div><div class="col-xs-2"><p>Publisher:</p></div><div class="col-xs-7"><p id="modalPublisher"></p></div></div>
+        <div><div class="col-xs-2"><p>ISBN:</p></div><div class="col-xs-7"><p id="modalISBN"></p></div></div>
+        <div><div class="col-xs-2"><p>Library:</p></div><div class="col-xs-7"><p id="modalLibrary"></p></div></div>
+        <div><div class="col-xs-2"><p>Shelf:</p></div><div class="col-xs-7"><p id="modalShelf"></p></div></div>
+        <div><div class="col-xs-2"><p>Description:</p></div><div class="col-xs-7"><p id="modalDescription"></p></div></div>
+
+    </div>
+    @if (ViewBag.Role == "Anauthorized")
+    {
+        <div class="fb-share-button" data-href="" data-layout="button" data-size="small" data-mobile-iframe="true">
+            <a id="modalfacebookShare" class="fb-xfbml-parse-ignore" target="_blank" href="">
+                <div class="col-xs-3">
+                    <button class="modalButton" type="button" name="button" style="background-color:#3b5998;color:white;">
+                        Share on Facebook
+                    </button>
+                </div>
+            </a>
+        </div>
+    }
+    @if (ViewBag.Role == "Student")
+    {
         <div class="modalDivButtons">
             <div class="col-xs-3">
                 <button class="modalButton" type="button" name="Reserve a copy">Reserve a copy</button>
@@ -90,7 +103,7 @@
             <div class="fb-share-button" data-href="" data-layout="button" data-size="small" data-mobile-iframe="true">
                 <a id="modalfacebookShare" class="fb-xfbml-parse-ignore" target="_blank" href="">
                     <div class="col-xs-3">
-                        <button class="modalButton" type="button" name="button" style="background-color:#3b5998;color:white;">
+                        <button class="modalButton" type="button" name="button" style="background-color:#3b5998;color:white;width:100%;">
                             Share on Facebook
                         </button>
                     </div>
@@ -98,6 +111,19 @@
             </div>
 
         </div>
+    }
+    @if (ViewBag.Role == "Librarian" || ViewBag.Role == "Admin")
+    {
+        <div class="col-xs-offset-3 col-xs-3">
+            <button class="modalButton" type="button" name="button">Edit book</button>
+        </div>
+        <div class="col-xs-3">
+            <button class="modalButton" type="button" name="button">Check in</button>
+        </div>
+        <div class="col-xs-3">
+            <button class="modalButton" type="button" name="button">Check out</button>
+        </div>
+    }
 
 
     </div>
