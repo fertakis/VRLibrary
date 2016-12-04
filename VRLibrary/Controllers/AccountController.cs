@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using VRLibrary.Models;
 using System.Security.Principal;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 
 namespace VRLibrary.Controllers
 {
@@ -402,6 +403,7 @@ namespace VRLibrary.Controllers
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+                    ViewBag.LibID = new SelectList(db.Libraries, "LibID", "Library_Name");
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }
         }
@@ -430,16 +432,26 @@ namespace VRLibrary.Controllers
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
+
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        return RedirectToLocal(returnUrl);
+                        result = await UserManager.AddToRoleAsync(user.Id, "PendingUser");
+                        if(result.Succeeded)
+                        {
+                            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                            return RedirectToLocal(returnUrl);
+                        }
+                        
                     }
                 }
                 AddErrors(result);
             }
 
+            //IEnumerable<SelectListItem> Libid = new SelectList(db.Libraries, "LibID", "Library_Name");
+            //ViewBag.LibID = new SelectList(db.Libraries, "LibID", "Library_Name");
+            //ViewBag.LibiID = Libid;
+            ViewBag.LibID = new SelectList(db.Libraries, "LibID", "Library_Name");
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
