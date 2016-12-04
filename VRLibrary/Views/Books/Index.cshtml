@@ -68,9 +68,20 @@
         <div><div class="col-xs-2"><p>Description:</p></div><div class="col-xs-7"><p id="modalDescription"></p></div></div>
 
     </div>
-    @if (ViewBag.Role == "Anauthorized")
+
+        <div class="" data-href="" data-layout="button" data-size="small" data-mobile-iframe="true">
+            <a id="modalfacebookShare" class="fb-xfbml-parse-ignore" target="_blank" href="">
+                <div class="col-xs-3">
+                    <button class="modalButton" type="button" name="button" style="background-color:#3b5998;color:white;">
+                        Share on Facebook
+                    </button>
+                </div>
+            </a>
+        </div>
+    @ViewBag.UserRole
+    @if (ViewBag.UserRole == "PendingUser")
     {
-        <div class="fb-share-button" data-href="" data-layout="button" data-size="small" data-mobile-iframe="true">
+        <div class="" data-href="" data-layout="button" data-size="small" data-mobile-iframe="true">
             <a id="modalfacebookShare" class="fb-xfbml-parse-ignore" target="_blank" href="">
                 <div class="col-xs-3">
                     <button class="modalButton" type="button" name="button" style="background-color:#3b5998;color:white;">
@@ -80,7 +91,7 @@
             </a>
         </div>
     }
-    @if (ViewBag.Role == "Student")
+    @if (ViewBag.UserRole == "Student")
     {
         <div class="modalDivButtons">
             <div class="col-xs-3">
@@ -100,7 +111,7 @@
                 </div>
             </div>
 
-            <div class="fb-share-button" data-href="" data-layout="button" data-size="small" data-mobile-iframe="true">
+            <div class="" data-href="" data-layout="button" data-size="small" data-mobile-iframe="true">
                 <a id="modalfacebookShare" class="fb-xfbml-parse-ignore" target="_blank" href="">
                     <div class="col-xs-3">
                         <button class="modalButton" type="button" name="button" style="background-color:#3b5998;color:white;width:100%;">
@@ -112,7 +123,7 @@
 
         </div>
     }
-    @if (ViewBag.Role == "Librarian" || ViewBag.Role == "Admin")
+    @if (ViewBag.UserRole == "Librarian" || ViewBag.UserRole == "Admin")
     {
         <div class="col-xs-offset-3 col-xs-3">
             <button class="modalButton" type="button" name="button">Edit book</button>
