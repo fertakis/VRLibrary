@@ -85,7 +85,7 @@
     {
         <div class="modalDivButtons">
             <div class="col-xs-3">
-                <button class="modalButton" type="button" name="Reserve a copy">Reserve a copy</button>
+                <button class="modalButton" type="button" name="Reserve a copy">@Html.ActionLink("Reserve a copy", "Create", "Reservations",new {id=ViewBag.UserId},null)</button>
             </div>
             <div class="col-xs-3">
                 <button class="modalButton" type="button" name="button">Extend loan</button>
