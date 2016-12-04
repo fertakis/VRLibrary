@@ -33,6 +33,8 @@ namespace VRLibrary.Controllers
 
 
             var books = db.Books.Include(b => b.BookState1).Include(b => b.Library);
+            //books = books.Where(s => s.BookID < 15);
+            
             
 
             if (!String.IsNullOrEmpty(searchString))
